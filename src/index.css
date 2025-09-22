@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,35 +10,52 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 220 27% 8%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 25% 10%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 25% 10%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 271 81% 56%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 23% 15%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 23% 15%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 192 84% 61%;
+    --accent-foreground: 220 27% 8%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 271 81% 56%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* AI-inspired gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(271 81% 56%), hsl(192 84% 61%));
+    --gradient-secondary: linear-gradient(135deg, hsl(220 25% 10%), hsl(220 23% 15%));
+    --gradient-glass: linear-gradient(135deg, hsla(210, 40%, 98%, 0.1), hsla(210, 40%, 98%, 0.05));
+    
+    /* Split-flap colors */
+    --flap-background: 220 20% 18%;
+    --flap-border: 220 20% 25%;
+    --flap-number: 210 40% 98%;
+    --flap-shadow: 0 10px 30px -10px hsla(271, 81%, 56%, 0.3);
+
+    /* Glass morphism */
+    --glass-border: hsla(210, 40%, 98%, 0.1);
+    --glass-bg: hsla(220, 25%, 10%, 0.8);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +120,50 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  /* Split-flap display styles */
+  .split-flap {
+    @apply relative inline-block overflow-hidden;
+    background: hsl(var(--flap-background));
+    border: 1px solid hsl(var(--flap-border));
+    box-shadow: var(--flap-shadow);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+
+  .split-flap-digit {
+    @apply flex items-center justify-center text-foreground;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-glass {
+    background: var(--gradient-glass);
+  }
+}
+
+@layer utilities {
+  /* Split-flap flip animations */
+  .flip-enter {
+    animation: flip-down 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .flip-exit {
+    animation: flip-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 }
