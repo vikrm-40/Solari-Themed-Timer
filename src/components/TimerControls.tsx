@@ -128,54 +128,6 @@ export const TimerControls = ({
         </Button>
       </div>
 
-      {/* Quick Time Presets */}
-      {!isRunning && (
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">Quick Presets</label>
-          <div className="flex gap-2 justify-center flex-wrap">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onMinutesChange(1);
-                onSecondsChange(0);
-              }}
-            >
-              1m
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onMinutesChange(5);
-                onSecondsChange(0);
-              }}
-            >
-              5m
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onMinutesChange(10);
-                onSecondsChange(0);
-              }}
-            >
-              10m
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onMinutesChange(25);
-                onSecondsChange(0);
-              }}
-            >
-              25m
-            </Button>
-          </div>
-        </div>
-      )}
 
       {/* Timer Status */}
       {isFinished && (
