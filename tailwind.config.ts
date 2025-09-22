@@ -83,32 +83,27 @@ export default {
             height: "0",
           },
         },
-        "flip-down": {
+        "flip-top": {
           "0%": {
             transform: "rotateX(0deg)",
             transformOrigin: "bottom",
-          },
-          "50%": {
-            transform: "rotateX(-90deg)",
-            transformOrigin: "bottom",
+            zIndex: "10",
           },
           "100%": {
-            transform: "rotateX(0deg)",
+            transform: "rotateX(-180deg)",
             transformOrigin: "bottom",
+            zIndex: "10",
           },
         },
-        "flip-up": {
+        "flip-reveal": {
           "0%": {
-            transform: "rotateX(0deg)",
-            transformOrigin: "top",
+            opacity: "0",
           },
           "50%": {
-            transform: "rotateX(90deg)",
-            transformOrigin: "top",
+            opacity: "0",
           },
           "100%": {
-            transform: "rotateX(0deg)",
-            transformOrigin: "top",
+            opacity: "1",
           },
         },
         "glow": {
@@ -123,8 +118,8 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "flip-down": "flip-down 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards",
-        "flip-up": "flip-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+        "flip-top": "flip-top 0.5s cubic-bezier(0.2, 0, 0.2, 1) forwards",
+        "flip-reveal": "flip-reveal 0.5s cubic-bezier(0.2, 0, 0.2, 1) forwards",
         "glow": "glow 2s ease-in-out infinite",
       },
     },

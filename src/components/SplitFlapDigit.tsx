@@ -19,44 +19,51 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
     if (value !== displayValue) {
       setIsFlipping(true);
       
-      // Change the display value halfway through the animation
+      // Change the display value when the top flap covers the bottom
       setTimeout(() => {
         setDisplayValue(value);
-      }, 300); // Half of the 600ms animation
+      }, 250); // When top flap reaches 90 degrees
       
       // Reset animation state
       setTimeout(() => {
         setIsFlipping(false);
-      }, 600);
+      }, 500);
     }
   }, [value, displayValue]);
 
   return (
     <div className="relative perspective-1000">
       {/* Background card with glass effect */}
-      <div className={`split-flap glass-card ${sizeClasses[size]} rounded-lg`}>
-        {/* Top half */}
-        <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden">
-          <div className={`split-flap-digit ${sizeClasses[size]} ${isFlipping ? 'animate-flip-up' : ''}`}>
-            {String(displayValue).padStart(2, '0').slice(-1)}
-          </div>
-        </div>
-        
-        {/* Bottom half */}
+      <div className={`split-flap glass-card ${sizeClasses[size]} rounded-lg overflow-hidden`}>
+        {/* Bottom half - static background showing current number */}
         <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden">
           <div 
-            className={`split-flap-digit ${sizeClasses[size]} ${isFlipping ? 'animate-flip-down' : ''}`}
+            className={`split-flap-digit ${sizeClasses[size]} flex items-center justify-center`}
             style={{ transform: 'translateY(-50%)' }}
           >
             {String(displayValue).padStart(2, '0').slice(-1)}
           </div>
         </div>
         
+        {/* New number showing underneath (revealed when top flips) */}
+        <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden">
+          <div className={`split-flap-digit ${sizeClasses[size]} flex items-center justify-center ${isFlipping ? 'animate-flip-reveal' : ''}`}>
+            {String(value).padStart(2, '0').slice(-1)}
+          </div>
+        </div>
+        
+        {/* Top half - the flipping part */}
+        <div className={`absolute top-0 left-0 w-full h-1/2 overflow-hidden ${isFlipping ? 'animate-flip-top' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
+          <div className={`split-flap-digit ${sizeClasses[size]} flex items-center justify-center bg-card`}>
+            {String(displayValue).padStart(2, '0').slice(-1)}
+          </div>
+        </div>
+        
         {/* Middle divider line */}
-        <div className="absolute top-1/2 left-0 w-full h-px bg-border opacity-50 z-10" />
+        <div className="absolute top-1/2 left-0 w-full h-px bg-border opacity-50 z-20" />
         
         {/* Highlight overlay for glass effect */}
-        <div className="absolute inset-0 gradient-glass rounded-lg pointer-events-none" />
+        <div className="absolute inset-0 gradient-glass rounded-lg pointer-events-none z-10" />
       </div>
       
       {/* Glow effect when flipping */}
