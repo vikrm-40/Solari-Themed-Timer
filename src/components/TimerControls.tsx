@@ -32,65 +32,68 @@ export const TimerControls = ({
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-center text-foreground">Set Timer</h3>
           
-          {/* Minutes Control */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">Minutes</label>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onMinutesChange(Math.max(0, minutes - 1))}
-                disabled={minutes === 0}
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <Input
-                type="number"
-                min="0"
-                max="59"
-                value={minutes}
-                onChange={(e) => onMinutesChange(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
-                className="text-center font-mono text-lg"
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onMinutesChange(Math.min(59, minutes + 1))}
-                disabled={minutes === 59}
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
+          {/* Time Controls */}
+          <div className="grid grid-cols-2 gap-4">
+            {/* Minutes */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">Minutes</label>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onMinutesChange(Math.max(0, minutes - 1))}
+                  disabled={minutes === 0}
+                >
+                  <Minus className="h-4 w-4" />
+                </Button>
+                <Input
+                  type="number"
+                  min="0"
+                  max="59"
+                  value={minutes}
+                  onChange={(e) => onMinutesChange(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
+                  className="text-center font-mono text-lg"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onMinutesChange(Math.min(59, minutes + 1))}
+                  disabled={minutes === 59}
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
-          </div>
 
-          {/* Seconds Control */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground">Seconds</label>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onSecondsChange(Math.max(0, seconds - 1))}
-                disabled={seconds === 0}
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <Input
-                type="number"
-                min="0"
-                max="59"
-                value={seconds}
-                onChange={(e) => onSecondsChange(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
-                className="text-center font-mono text-lg"
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onSecondsChange(Math.min(59, seconds + 1))}
-                disabled={seconds === 59}
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
+            {/* Seconds */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">Seconds</label>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onSecondsChange(Math.max(0, seconds - 1))}
+                  disabled={seconds === 0}
+                >
+                  <Minus className="h-4 w-4" />
+                </Button>
+                <Input
+                  type="number"
+                  min="0"
+                  max="59"
+                  value={seconds}
+                  onChange={(e) => onSecondsChange(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))}
+                  className="text-center font-mono text-lg"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onSecondsChange(Math.min(59, seconds + 1))}
+                  disabled={seconds === 59}
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
