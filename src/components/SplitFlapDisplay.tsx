@@ -19,11 +19,24 @@ export const SplitFlapDisplay = ({ minutes, seconds, size = 'lg' }: SplitFlapDis
   };
 
   return (
-    <div className="flex items-center justify-center gap-1">
-      <SplitFlapDigit value={minuteTens} size={size} />
-      <SplitFlapDigit value={minuteOnes} size={size} />
-      <SplitFlapDigit value={secondTens} size={size} />
-      <SplitFlapDigit value={secondOnes} size={size} />
+    <div className="flex items-center justify-center gap-2 md:gap-4">
+      {/* Minutes */}
+      <div className="flex gap-1">
+        <SplitFlapDigit value={minuteTens} size={size} />
+        <SplitFlapDigit value={minuteOnes} size={size} />
+      </div>
+      
+      {/* Separator */}
+      <div className={`flex flex-col justify-center ${separatorSize[size]} font-mono font-bold text-accent animate-pulse`}>
+        <div className="h-2 w-2 bg-accent rounded-full mb-2"></div>
+        <div className="h-2 w-2 bg-accent rounded-full"></div>
+      </div>
+      
+      {/* Seconds */}
+      <div className="flex gap-1">
+        <SplitFlapDigit value={secondTens} size={size} />
+        <SplitFlapDigit value={secondOnes} size={size} />
+      </div>
     </div>
   );
 };
