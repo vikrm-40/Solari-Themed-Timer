@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface SplitFlapDigitProps {
   value: number;
@@ -13,76 +13,116 @@ const sizeClasses = {
 
 export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
   const [displayValue, setDisplayValue] = useState(value);
-  const [isFlipping, setIsFlipping] = useState(false);
+  const [phase, setPhase] = useState<'idle' | 'top' | 'bottom'>('idle');
+  const [showTopFlap, setShowTopFlap] = useState(false);
+  const [showBottomFlap, setShowBottomFlap] = useState(false);
+  const [topAngle, setTopAngle] = useState(0); // 0 -> -90
+  const [bottomAngle, setBottomAngle] = useState(90); // 90 -> 0
+
+  const topTimeoutRef = useRef<number | null>(null);
+  const bottomTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (value !== displayValue) {
-      setIsFlipping(true);
-      
-      // Update display value after the flip animation completes
-      setTimeout(() => {
-        setDisplayValue(value);
-        setIsFlipping(false);
-      }, 500);
-    }
+    return () => {
+      if (topTimeoutRef.current) window.clearTimeout(topTimeoutRef.current);
+      if (bottomTimeoutRef.current) window.clearTimeout(bottomTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (value === displayValue) return;
+
+    // Phase 1: Top flap closes (current digit)
+    setPhase('top');
+    setShowTopFlap(true);
+    setTopAngle(0);
+    requestAnimationFrame(() => {
+      setTopAngle(-90);
+    });
+
+    topTimeoutRef.current = window.setTimeout(() => {
+      // Switch the displayed value as the flap reaches 90deg
+      setDisplayValue(value);
+      setShowTopFlap(false);
+
+      // Phase 2: Bottom flap opens (next digit)
+      setPhase('bottom');
+      setShowBottomFlap(true);
+      setBottomAngle(90);
+      requestAnimationFrame(() => {
+        setBottomAngle(0);
+      });
+
+      bottomTimeoutRef.current = window.setTimeout(() => {
+        setShowBottomFlap(false);
+        setPhase('idle');
+      }, 250);
+    }, 250);
   }, [value, displayValue]);
 
   const currentDigit = String(displayValue).padStart(2, '0').slice(-1);
   const nextDigit = String(value).padStart(2, '0').slice(-1);
 
+  const topStaticDigit = phase === 'idle' ? currentDigit : nextDigit;
+  const bottomStaticDigit = phase === 'top' ? currentDigit : nextDigit;
+
   return (
-    <div className="relative perspective-1000">
-      <div className={`relative ${sizeClasses[size]} rounded-lg overflow-hidden bg-card border border-border/20 shadow-lg`}>
-        
-        {/* Static bottom half - always shows current number */}
-        <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden bg-card">
-          <div 
-            className={`absolute inset-0 ${sizeClasses[size]} flex items-start justify-center pt-0 font-mono font-bold text-foreground`}
-            style={{ transform: 'translateY(-100%)' }}
-          >
-            {isFlipping ? nextDigit : currentDigit}
+    <div className="relative" style={{ perspective: '1000px' }}>
+      <div className={`relative ${sizeClasses[size]} rounded-md overflow-hidden bg-card border border-border/30 shadow-sm`}>
+        {/* Top static half (revealed under the rotating flap) */}
+        <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card">
+          <div className={`${sizeClasses[size]} h-full flex items-end justify-center font-mono font-bold text-foreground`}>
+            {topStaticDigit}
           </div>
         </div>
 
-        {/* Static top half - shows current number when not flipping */}
-        {!isFlipping && (
-          <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card">
-            <div className={`${sizeClasses[size]} flex items-end justify-center pb-0 font-mono font-bold text-foreground`}>
+        {/* Bottom static half */}
+        <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden bg-card">
+          <div className={`${sizeClasses[size]} h-full flex items-start justify-center font-mono font-bold text-foreground`}>
+            {bottomStaticDigit}
+          </div>
+        </div>
+
+        {/* Rotating TOP flap (current digit) */}
+        {showTopFlap && (
+          <div
+            className="absolute top-0 left-0 w-full h-1/2 overflow-hidden z-10"
+            style={{ transformStyle: 'preserve-3d', transformOrigin: 'bottom center' }}
+          >
+            <div
+              className={`${sizeClasses[size]} h-full flex items-end justify-center font-mono font-bold text-foreground bg-card`}
+              style={{
+                backfaceVisibility: 'hidden',
+                transform: `rotateX(${topAngle}deg)`,
+                transition: 'transform 250ms cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+            >
               {currentDigit}
             </div>
           </div>
         )}
 
-        {/* Animated top flap - rotates down during flip */}
-        {isFlipping && (
-          <>
-            {/* New number revealed underneath */}
-            <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card">
-              <div className={`${sizeClasses[size]} flex items-end justify-center pb-0 font-mono font-bold text-foreground`}>
-                {nextDigit}
-              </div>
-            </div>
-            
-            {/* Rotating flap with old number */}
-            <div 
-              className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card animate-flip-top z-10"
-              style={{ 
-                transformStyle: 'preserve-3d',
-                transformOrigin: 'bottom center'
+        {/* Rotating BOTTOM flap (next digit) */}
+        {showBottomFlap && (
+          <div
+            className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden z-10"
+            style={{ transformStyle: 'preserve-3d', transformOrigin: 'top center' }}
+          >
+            <div
+              className={`${sizeClasses[size]} h-full flex items-start justify-center font-mono font-bold text-foreground bg-card`}
+              style={{
+                backfaceVisibility: 'hidden',
+                transform: `rotateX(${bottomAngle}deg)`,
+                transition: 'transform 250ms cubic-bezier(0.4, 0, 0.2, 1)'
               }}
             >
-              <div className={`${sizeClasses[size]} flex items-end justify-center pb-0 font-mono font-bold text-foreground`}>
-                {currentDigit}
-              </div>
+              {nextDigit}
             </div>
-          </>
+          </div>
         )}
-        
-        {/* Center divider line */}
-        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border/30 z-20 transform -translate-y-px" />
-        
-        {/* Subtle highlight for depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none z-5" />
+
+        {/* Divider */}
+        <div className="absolute top-1/2 left-0 w-full h-px bg-border/50 z-20" />
       </div>
     </div>
   );
