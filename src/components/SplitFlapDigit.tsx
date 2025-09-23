@@ -14,79 +14,76 @@ const sizeClasses = {
 export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
   const [displayValue, setDisplayValue] = useState(value);
   const [isFlipping, setIsFlipping] = useState(false);
-  const [nextValue, setNextValue] = useState(value);
 
   useEffect(() => {
     if (value !== displayValue) {
-      setNextValue(value);
       setIsFlipping(true);
       
-      
-      // Change the display value when the flap is halfway
+      // Update display value after the flip animation completes
       setTimeout(() => {
         setDisplayValue(value);
-      }, 250);
-      
-      // Reset animation state
-      setTimeout(() => {
         setIsFlipping(false);
       }, 500);
     }
   }, [value, displayValue]);
 
+  const currentDigit = String(displayValue).padStart(2, '0').slice(-1);
+  const nextDigit = String(value).padStart(2, '0').slice(-1);
+
   return (
     <div className="relative perspective-1000">
-      {/* Background card with glass effect */}
-      <div className={`split-flap glass-card ${sizeClasses[size]} rounded-lg overflow-hidden`}>
-        {/* Bottom half - shows the current number */}
+      <div className={`relative ${sizeClasses[size]} rounded-lg overflow-hidden bg-card border border-border/20 shadow-lg`}>
+        
+        {/* Static bottom half - always shows current number */}
         <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden bg-card">
           <div 
-            className={`split-flap-digit ${sizeClasses[size]} flex items-center justify-center`}
-            style={{ transform: 'translateY(-50%)' }}
+            className={`absolute inset-0 ${sizeClasses[size]} flex items-start justify-center pt-0 font-mono font-bold text-foreground`}
+            style={{ transform: 'translateY(-100%)' }}
           >
-            {String(displayValue).padStart(2, '0').slice(-1)}
+            {isFlipping ? nextDigit : currentDigit}
           </div>
         </div>
-        
-        {/* Top half static - shows current number until flip starts */}
-        <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card">
-          <div className={`split-flap-digit ${sizeClasses[size]} flex items-center justify-center`}>
-            {String(displayValue).padStart(2, '0').slice(-1)}
-          </div>
-        </div>
-        
-        {/* New number revealed underneath (only visible during flip) */}
-        {isFlipping && (
-          <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card z-5">
-            <div className={`split-flap-digit ${sizeClasses[size]} flex items-center justify-center animate-flip-reveal`}>
-              {String(nextValue).padStart(2, '0').slice(-1)}
+
+        {/* Static top half - shows current number when not flipping */}
+        {!isFlipping && (
+          <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card">
+            <div className={`${sizeClasses[size]} flex items-end justify-center pb-0 font-mono font-bold text-foreground`}>
+              {currentDigit}
             </div>
           </div>
         )}
-        
-        {/* Flipping top half */}
+
+        {/* Animated top flap - rotates down during flip */}
         {isFlipping && (
-          <div 
-            className="absolute top-0 left-0 w-full h-1/2 overflow-hidden animate-flip-top z-15 bg-card"
-            style={{ transformStyle: 'preserve-3d' }}
-          >
-            <div className={`split-flap-digit ${sizeClasses[size]} flex items-center justify-center`}>
-              {String(displayValue).padStart(2, '0').slice(-1)}
+          <>
+            {/* New number revealed underneath */}
+            <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card">
+              <div className={`${sizeClasses[size]} flex items-end justify-center pb-0 font-mono font-bold text-foreground`}>
+                {nextDigit}
+              </div>
             </div>
-          </div>
+            
+            {/* Rotating flap with old number */}
+            <div 
+              className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card animate-flip-top z-10"
+              style={{ 
+                transformStyle: 'preserve-3d',
+                transformOrigin: 'bottom center'
+              }}
+            >
+              <div className={`${sizeClasses[size]} flex items-end justify-center pb-0 font-mono font-bold text-foreground`}>
+                {currentDigit}
+              </div>
+            </div>
+          </>
         )}
         
-        {/* Middle divider line */}
-        <div className="absolute top-1/2 left-0 w-full h-px bg-border opacity-50 z-20" />
+        {/* Center divider line */}
+        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border/30 z-20 transform -translate-y-px" />
         
-        {/* Highlight overlay for glass effect */}
-        <div className="absolute inset-0 gradient-glass rounded-lg pointer-events-none z-10" />
+        {/* Subtle highlight for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none z-5" />
       </div>
-      
-      {/* Glow effect when flipping */}
-      {isFlipping && (
-        <div className="absolute inset-0 rounded-lg animate-glow pointer-events-none" />
-      )}
     </div>
   );
 };
