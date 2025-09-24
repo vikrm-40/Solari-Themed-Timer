@@ -55,19 +55,23 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
       <div className={`relative ${sizeClasses[size]} rounded-md overflow-hidden bg-card border border-border/30 shadow-sm`}>
         {/* Top static half - shows next digit (revealed when flipping) */}
         <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card">
-          <div className={`${sizeClasses[size]} h-full flex items-end justify-center font-mono font-bold text-foreground`}>
+          <div className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-foreground`} 
+               style={{ height: `${sizeClasses[size].includes('h-16') ? '32px' : sizeClasses[size].includes('h-20') ? '40px' : '56px'}`, 
+                        marginTop: '0' }}>
             {nextDigit}
           </div>
         </div>
 
         {/* Bottom static half - shows current digit */}
         <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden bg-card">
-          <div className={`${sizeClasses[size]} h-full flex items-start justify-center font-mono font-bold text-foreground`}>
+          <div className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-foreground`}
+               style={{ height: `${sizeClasses[size].includes('h-16') ? '32px' : sizeClasses[size].includes('h-20') ? '40px' : '56px'}`, 
+                        marginTop: `${sizeClasses[size].includes('h-16') ? '-32px' : sizeClasses[size].includes('h-20') ? '-40px' : '-56px'}` }}>
             {currentDigit}
           </div>
         </div>
 
-        {/* Rotating flap - shows current digit and flips down */}
+        {/* Rotating flap - shows current digit top half and flips down */}
         {isFlipping && (
           <div
             className="absolute top-0 left-0 w-full h-1/2 overflow-hidden z-10"
@@ -78,7 +82,9 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
               transition: 'transform 250ms cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           >
-            <div className={`${sizeClasses[size]} h-full flex items-end justify-center font-mono font-bold text-foreground bg-card`}>
+            <div className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-foreground bg-card`}
+                 style={{ height: `${sizeClasses[size].includes('h-16') ? '32px' : sizeClasses[size].includes('h-20') ? '40px' : '56px'}`, 
+                          marginTop: '0' }}>
               {currentDigit}
             </div>
           </div>
