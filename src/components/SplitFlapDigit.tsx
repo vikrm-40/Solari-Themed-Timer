@@ -54,11 +54,11 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
 
   return (
     <div className="relative" style={{ perspective: '1000px' }}>
-      <div className={`relative ${sizeClasses[size]} rounded-md overflow-hidden bg-card border border-border/30 shadow-sm`}>
+      <div className={`relative ${sizeClasses[size]} rounded-md overflow-hidden bg-white border border-border/30 shadow-sm`}>
         {/* Top half - shows current digit normally, next digit when flipping */}
-        <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-card">
+        <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-white">
           <div 
-            className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-foreground`}
+            className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-black`}
             style={{ 
               height: `${halfHeight * 2}px`,
               marginTop: '0',
@@ -70,9 +70,9 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
         </div>
 
         {/* Bottom half - shows current digit normally, next digit when flipping */}
-        <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden bg-card">
+        <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden bg-white">
           <div 
-            className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-foreground`}
+            className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-black`}
             style={{ 
               height: `${halfHeight * 2}px`,
               marginTop: `-${halfHeight}px`,
@@ -86,7 +86,7 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
         {/* Flipping top half */}
         {isFlipping && (
           <div
-            className="absolute top-0 left-0 w-full h-1/2 overflow-hidden z-10 bg-card"
+            className="absolute top-0 left-0 w-full h-1/2 overflow-hidden z-10 bg-white"
             style={{ 
               transformStyle: 'preserve-3d', 
               transformOrigin: 'bottom center',
@@ -96,7 +96,7 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
             }}
           >
             <div 
-              className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-foreground`}
+              className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-black`}
               style={{ 
                 height: `${halfHeight * 2}px`,
                 marginTop: '0',
