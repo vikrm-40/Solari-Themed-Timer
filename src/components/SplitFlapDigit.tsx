@@ -54,9 +54,9 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
 
   return (
     <div className="relative" style={{ perspective: '1000px' }}>
-      <div className={`relative ${sizeClasses[size]} rounded-md overflow-hidden bg-white border border-border/30 shadow-sm`}>
+      <div className={`relative ${sizeClasses[size]} rounded-md overflow-hidden bg-gradient-to-b from-gray-100 to-white border-2 border-gray-300 shadow-lg`} style={{ boxShadow: '0 8px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -1px 0 rgba(0,0,0,0.1)' }}>
         {/* Top half - shows current digit normally, next digit when flipping */}
-        <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-white">
+        <div className="absolute top-0 left-0 w-full h-1/2 overflow-hidden bg-gradient-to-b from-gray-50 to-gray-100" style={{ boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)' }}>
           <div 
             className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-black`}
             style={{ 
@@ -70,7 +70,7 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
         </div>
 
         {/* Bottom half - shows current digit normally, next digit when flipping */}
-        <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden bg-white">
+        <div className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden bg-gradient-to-t from-gray-200 to-gray-100" style={{ boxShadow: 'inset 0 -2px 4px rgba(0,0,0,0.15)' }}>
           <div 
             className={`${sizeClasses[size]} flex items-center justify-center font-mono font-bold text-black`}
             style={{ 
@@ -86,13 +86,14 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
         {/* Flipping top half */}
         {isFlipping && (
           <div
-            className="absolute top-0 left-0 w-full h-1/2 overflow-hidden z-10 bg-white"
+            className="absolute top-0 left-0 w-full h-1/2 overflow-hidden z-10 bg-gradient-to-b from-gray-50 to-gray-100"
             style={{ 
               transformStyle: 'preserve-3d', 
               transformOrigin: 'bottom center',
               transform: `rotateX(${flipAngle}deg)`,
               transition: 'transform 250ms cubic-bezier(0.4, 0, 0.2, 1)',
-              backfaceVisibility: 'hidden'
+              backfaceVisibility: 'hidden',
+              boxShadow: '0 4px 8px rgba(0,0,0,0.2), inset 0 2px 4px rgba(0,0,0,0.1)'
             }}
           >
             <div 
@@ -109,7 +110,7 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
         )}
 
         {/* Divider line */}
-        <div className="absolute top-1/2 left-0 w-full h-px bg-border/50 z-20" />
+        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-gray-400 via-gray-600 to-gray-400 z-20" style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(0,0,0,0.2)' }} />
       </div>
     </div>
   );
