@@ -1,6 +1,5 @@
 import { SplitFlapDisplay } from '@/components/SplitFlapDisplay';
 import { TimerControls } from '@/components/TimerControls';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { useTimer } from '@/hooks/useTimer';
 
 const Index = () => {
@@ -18,11 +17,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 flex flex-col items-center justify-center p-4">
-      {/* Theme Toggle */}
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
-      </div>
-      
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-4xl md:text-6xl font-bold gradient-primary bg-clip-text text-transparent mb-2">
