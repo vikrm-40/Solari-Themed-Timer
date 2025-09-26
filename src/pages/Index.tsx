@@ -20,11 +20,8 @@ const Index = () => {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-4xl md:text-6xl font-bold gradient-primary bg-clip-text text-transparent mb-2">
-          Split-Flap Timer
+          Timer
         </h1>
-        <p className="text-muted-foreground text-lg">
-          Classic Solari display meets modern design
-        </p>
       </div>
 
       {/* Main Timer Display */}
@@ -49,11 +46,6 @@ const Index = () => {
           onPause={pause}
           onReset={reset}
         />
-      </div>
-
-      {/* Footer */}
-      <div className="mt-8 text-center text-sm text-muted-foreground">
-        <p>Inspired by classic train station displays</p>
       </div>
 
       {/* Navigation link to dark version */}

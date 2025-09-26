@@ -20,11 +20,8 @@ const DarkTimer = () => {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">
-          Dark Split-Flap Timer
+          Timer
         </h1>
-        <p className="text-yellow-400/80 text-lg">
-          Classic mechanical display with modern dark theme
-        </p>
       </div>
 
       {/* Main Timer Display */}
@@ -50,11 +47,6 @@ const DarkTimer = () => {
           onPause={pause}
           onReset={reset}
         />
-      </div>
-
-      {/* Footer */}
-      <div className="mt-8 text-center text-sm text-yellow-400/60">
-        <p>Industrial-grade split flap display</p>
       </div>
 
       {/* Navigation link to light version */}
