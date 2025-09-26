@@ -2,7 +2,7 @@ import { SplitFlapDisplay } from '@/components/SplitFlapDisplay';
 import { TimerControls } from '@/components/TimerControls';
 import { useTimer } from '@/hooks/useTimer';
 
-const Index = () => {
+const DarkTimer = () => {
   const {
     minutes,
     seconds,
@@ -16,14 +16,14 @@ const Index = () => {
   } = useTimer(5, 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col items-center justify-center p-4">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-4xl md:text-6xl font-bold gradient-primary bg-clip-text text-transparent mb-2">
-          Split-Flap Timer
+        <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">
+          Dark Split-Flap Timer
         </h1>
-        <p className="text-muted-foreground text-lg">
-          Classic Solari display meets modern design
+        <p className="text-yellow-400/80 text-lg">
+          Classic mechanical display with modern dark theme
         </p>
       </div>
 
@@ -33,6 +33,7 @@ const Index = () => {
           minutes={minutes} 
           seconds={seconds}
           size="lg"
+          variant="dark"
         />
       </div>
 
@@ -52,21 +53,21 @@ const Index = () => {
       </div>
 
       {/* Footer */}
-      <div className="mt-8 text-center text-sm text-muted-foreground">
-        <p>Inspired by classic train station displays</p>
+      <div className="mt-8 text-center text-sm text-yellow-400/60">
+        <p>Industrial-grade split flap display</p>
       </div>
 
-      {/* Navigation link to dark version */}
+      {/* Navigation link to light version */}
       <div className="mt-4">
         <a 
-          href="/dark" 
-          className="text-primary hover:text-primary/80 underline text-sm"
+          href="/" 
+          className="text-yellow-400 hover:text-yellow-300 underline text-sm"
         >
-          Switch to Dark Version
+          Switch to Light Version
         </a>
       </div>
     </div>
   );
 };
 
-export default Index;
+export default DarkTimer;

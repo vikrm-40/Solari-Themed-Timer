@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 interface SplitFlapDigitProps {
   value: number;
   size?: 'sm' | 'md' | 'lg';
+  variant?: 'light' | 'dark';
 }
 
 const sizeClasses = {
@@ -11,7 +12,7 @@ const sizeClasses = {
   lg: 'w-20 h-28 text-5xl'
 };
 
-export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
+export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitFlapDigitProps) => {
   const [displayValue, setDisplayValue] = useState(value);
   const [isFlipping, setIsFlipping] = useState(false);
   const [flipAngle, setFlipAngle] = useState(0);
@@ -51,20 +52,51 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
   const nextDigit = String(value).padStart(2, '0').slice(-1);
 
   const halfHeight = sizeClasses[size].includes('h-16') ? 32 : sizeClasses[size].includes('h-20') ? 40 : 56;
+  
+  // Theme-specific styles
+  const themeStyles = {
+    light: {
+      background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)',
+      topHalf: 'linear-gradient(180deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)',
+      bottomHalf: 'linear-gradient(0deg, #f1f3f4 0%, #f8f9fa 50%, #ffffff 100%)',
+      textColor: '#111827', // gray-900
+      boxShadow: `
+        0 4px 16px rgba(0,0,0,0.08),
+        0 2px 8px rgba(0,0,0,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.8),
+        inset 0 -1px 0 rgba(0,0,0,0.05)
+      `,
+      border: '0.5px solid rgba(0,0,0,0.08)',
+      dividerLine: 'rgba(0,0,0,0.08)',
+      highlightLine: 'rgba(255,255,255,0.4)'
+    },
+    dark: {
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #2a2a2a 100%)',
+      topHalf: 'linear-gradient(180deg, #000000 0%, #1a1a1a 50%, #2a2a2a 100%)',
+      bottomHalf: 'linear-gradient(0deg, #2a2a2a 0%, #1a1a1a 50%, #000000 100%)',
+      textColor: '#fbbf24', // yellow-400
+      boxShadow: `
+        0 4px 16px rgba(0,0,0,0.3),
+        0 2px 8px rgba(0,0,0,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        inset 0 -1px 0 rgba(0,0,0,0.3)
+      `,
+      border: '0.5px solid rgba(255,255,255,0.1)',
+      dividerLine: 'rgba(255,255,255,0.15)',
+      highlightLine: 'rgba(251,191,36,0.2)'
+    }
+  };
+  
+  const currentTheme = themeStyles[variant];
 
   return (
     <div className="relative" style={{ perspective: '800px' }}>
       <div 
         className={`relative ${sizeClasses[size]} rounded-lg overflow-hidden`}
         style={{ 
-          background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)',
-          boxShadow: `
-            0 4px 16px rgba(0,0,0,0.08),
-            0 2px 8px rgba(0,0,0,0.04),
-            inset 0 1px 0 rgba(255,255,255,0.8),
-            inset 0 -1px 0 rgba(0,0,0,0.05)
-          `,
-          border: '0.5px solid rgba(0,0,0,0.08)',
+          background: currentTheme.background,
+          boxShadow: currentTheme.boxShadow,
+          border: currentTheme.border,
           transform: 'rotateX(1deg)',
           transformStyle: 'preserve-3d'
         }}
@@ -73,18 +105,19 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
         <div 
           className="absolute top-0 left-0 w-full h-1/2 overflow-hidden"
           style={{ 
-            background: 'linear-gradient(180deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)',
+            background: currentTheme.topHalf,
             boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.04)'
           }}
         >
           <div 
-            className={`${sizeClasses[size]} flex items-center justify-center font-semibold text-gray-900`}
+            className={`${sizeClasses[size]} flex items-center justify-center font-semibold`}
             style={{ 
               height: `${halfHeight * 2}px`,
               marginTop: '0',
               clipPath: 'inset(0 0 50% 0)',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-              letterSpacing: '0.02em'
+              letterSpacing: '0.02em',
+              color: currentTheme.textColor
             }}
           >
             {isFlipping && flipAngle >= 90 ? nextDigit : currentDigit}
@@ -95,19 +128,20 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
         <div 
           className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden"
           style={{ 
-            background: 'linear-gradient(0deg, #f1f3f4 0%, #f8f9fa 50%, #ffffff 100%)',
+            background: currentTheme.bottomHalf,
             boxShadow: 'inset 0 -1px 2px rgba(0,0,0,0.04)'
           }}
         >
           <div 
-            className={`${sizeClasses[size]} flex items-center justify-center font-semibold text-gray-900`}
+            className={`${sizeClasses[size]} flex items-center justify-center font-semibold`}
             style={{ 
               height: `${halfHeight * 2}px`,
               marginTop: `-${halfHeight}px`,
               clipPath: 'inset(50% 0 0 0)',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
               letterSpacing: '0.02em',
-              filter: 'brightness(0.95)'
+              filter: 'brightness(0.95)',
+              color: currentTheme.textColor
             }}
           >
             {isFlipping && flipAngle >= 90 ? nextDigit : currentDigit}
@@ -119,7 +153,7 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
           <div
             className="absolute top-0 left-0 w-full h-1/2 overflow-hidden z-10"
             style={{ 
-              background: 'linear-gradient(180deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)',
+              background: currentTheme.topHalf,
               transformStyle: 'preserve-3d', 
               transformOrigin: 'bottom center',
               transform: `rotateX(${flipAngle}deg)`,
@@ -134,13 +168,14 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
             }}
           >
             <div 
-              className={`${sizeClasses[size]} flex items-center justify-center font-semibold text-gray-900`}
+              className={`${sizeClasses[size]} flex items-center justify-center font-semibold`}
               style={{ 
                 height: `${halfHeight * 2}px`,
                 marginTop: '0',
                 clipPath: 'inset(0 0 50% 0)',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                letterSpacing: '0.02em'
+                letterSpacing: '0.02em',
+                color: currentTheme.textColor
               }}
             >
               {currentDigit}
@@ -153,7 +188,7 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
           className="absolute top-1/2 left-0 w-full z-20" 
           style={{ 
             height: '0.5px',
-            background: 'rgba(0,0,0,0.08)',
+            background: currentTheme.dividerLine,
             boxShadow: '0 0.5px 0 rgba(255,255,255,0.6)',
             transform: 'translateY(-0.25px)'
           }} 
@@ -164,7 +199,7 @@ export const SplitFlapDigit = ({ value, size = 'lg' }: SplitFlapDigitProps) => {
           className="absolute top-1/2 left-0 w-full z-19" 
           style={{ 
             height: '0.5px',
-            background: 'rgba(255,255,255,0.4)',
+            background: currentTheme.highlightLine,
             transform: 'translateY(0.25px)'
           }} 
         />

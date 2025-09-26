@@ -4,9 +4,10 @@ interface SplitFlapDisplayProps {
   minutes: number;
   seconds: number;
   size?: 'sm' | 'md' | 'lg';
+  variant?: 'light' | 'dark';
 }
 
-export const SplitFlapDisplay = ({ minutes, seconds, size = 'lg' }: SplitFlapDisplayProps) => {
+export const SplitFlapDisplay = ({ minutes, seconds, size = 'lg', variant = 'light' }: SplitFlapDisplayProps) => {
   const minuteTens = Math.floor(minutes / 10);
   const minuteOnes = minutes % 10;
   const secondTens = Math.floor(seconds / 10);
@@ -22,8 +23,8 @@ export const SplitFlapDisplay = ({ minutes, seconds, size = 'lg' }: SplitFlapDis
     <div className="flex items-center justify-center gap-2 md:gap-4">
       {/* Minutes */}
       <div className="flex gap-1">
-        <SplitFlapDigit value={minuteTens} size={size} />
-        <SplitFlapDigit value={minuteOnes} size={size} />
+        <SplitFlapDigit value={minuteTens} size={size} variant={variant} />
+        <SplitFlapDigit value={minuteOnes} size={size} variant={variant} />
       </div>
       
       {/* Separator */}
@@ -34,8 +35,8 @@ export const SplitFlapDisplay = ({ minutes, seconds, size = 'lg' }: SplitFlapDis
       
       {/* Seconds */}
       <div className="flex gap-1">
-        <SplitFlapDigit value={secondTens} size={size} />
-        <SplitFlapDigit value={secondOnes} size={size} />
+        <SplitFlapDigit value={secondTens} size={size} variant={variant} />
+        <SplitFlapDigit value={secondOnes} size={size} variant={variant} />
       </div>
     </div>
   );
