@@ -15,7 +15,10 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        gradient: "gradient-primary text-primary-foreground hover:opacity-90 shadow-lg",
+        gradient: "gradient-primary text-primary-foreground hover:opacity-90 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300",
+        neon: "gradient-neon text-white hover:opacity-90 glow-effect hover:scale-[1.05] transition-all duration-300",
+        success: "gradient-success text-white hover:opacity-90 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300",
+        icon: "rounded-full p-2 hover:bg-accent hover:text-accent-foreground hover:scale-110 transition-all duration-300",
       },
       size: {
         default: "h-10 px-4 py-2",

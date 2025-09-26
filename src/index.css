@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -40,10 +40,13 @@ All colors MUST be HSL.
 
     --radius: 0.75rem;
 
-    /* AI-inspired gradients */
+    /* Modern gradients */
     --gradient-primary: linear-gradient(135deg, hsl(271 81% 56%), hsl(192 84% 61%));
     --gradient-secondary: linear-gradient(135deg, hsl(220 25% 10%), hsl(220 23% 15%));
     --gradient-glass: linear-gradient(135deg, hsla(210, 40%, 98%, 0.1), hsla(210, 40%, 98%, 0.05));
+    --gradient-neon: linear-gradient(135deg, hsl(290 100% 70%), hsl(220 100% 70%));
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(158 64% 52%));
+    --gradient-aurora: linear-gradient(135deg, hsl(271 81% 56%), hsl(192 84% 61%), hsl(142 76% 36%));
     
     /* Split-flap colors */
     --flap-background: 220 20% 18%;
@@ -54,6 +57,13 @@ All colors MUST be HSL.
     /* Glass morphism */
     --glass-border: hsla(210, 40%, 98%, 0.1);
     --glass-bg: hsla(220, 25%, 10%, 0.8);
+    --glass-card: hsla(220, 25%, 10%, 0.7);
+    --glass-hover: hsla(271, 81%, 56%, 0.1);
+    
+    /* Shadows and glows */
+    --shadow-glow: 0 0 30px hsla(271, 81%, 56%, 0.5);
+    --shadow-card: 0 20px 40px -10px hsla(220, 25%, 5%, 0.5);
+    --shadow-float: 0 10px 30px hsla(271, 81%, 56%, 0.2);
 
     --radius: 0.75rem;
 
@@ -122,6 +132,14 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, sans-serif;
   }
+  
+  .font-display {
+    font-family: 'Orbitron', 'Inter', system-ui, sans-serif;
+  }
+  
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
 }
 
 @layer components {
@@ -142,18 +160,67 @@ All colors MUST be HSL.
   }
 
   .glass-card {
-    background: var(--glass-bg);
+    background: var(--glass-card);
     border: 1px solid var(--glass-border);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .glass-card:hover {
+    background: var(--glass-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-float);
   }
 
   .gradient-primary {
     background: var(--gradient-primary);
   }
+  
+  .gradient-neon {
+    background: var(--gradient-neon);
+  }
+  
+  .gradient-success {
+    background: var(--gradient-success);
+  }
+  
+  .gradient-aurora {
+    background: var(--gradient-aurora);
+  }
 
   .gradient-glass {
     background: var(--gradient-glass);
+  }
+  
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  /* Number input styles */
+  .number-input-container {
+    @apply relative overflow-hidden rounded-lg bg-card/50 border border-border/50;
+    backdrop-filter: blur(10px);
+  }
+  
+  .number-input {
+    @apply w-full bg-transparent text-center text-xl font-mono font-semibold text-foreground;
+    @apply border-0 outline-0 focus:ring-0 focus:outline-none;
+  }
+  
+  .number-button {
+    @apply absolute top-0 h-full w-8 flex items-center justify-center;
+    @apply bg-gradient-to-b from-primary/10 to-primary/20;
+    @apply border-0 text-primary hover:from-primary/20 hover:to-primary/30;
+    @apply transition-all duration-200 cursor-pointer;
+  }
+  
+  .theme-toggle {
+    @apply inline-flex items-center justify-center rounded-full p-2;
+    @apply bg-card/50 border border-border/50 backdrop-filter backdrop-blur-lg;
+    @apply hover:bg-primary/10 hover:border-primary/30;
+    @apply transition-all duration-300 cursor-pointer;
   }
 }
 
