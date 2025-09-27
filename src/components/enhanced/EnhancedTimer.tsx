@@ -4,7 +4,6 @@ import { EnhancedCard, EnhancedCardHeader, EnhancedCardContent } from '../ui/enh
 import { Typography } from '../ui/typography';
 import { NumberInput } from '../ui/number-input';
 import { Button } from '../ui/button';
-import { ProgressRing } from '../ui/progress-ring';
 import { ThemeToggle } from '../ui/theme-toggle';
 import { useTimer } from '@/hooks/useTimer';
 import { toast } from '@/hooks/use-toast';
@@ -28,11 +27,6 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
   } = useTimer(5, 0);
 
   const [darkMode, setDarkMode] = useState(isDarkMode);
-  
-  // Calculate progress for ring
-  const totalSeconds = 5 * 60; // Default 5 minutes
-  const currentSeconds = minutes * 60 + seconds;
-  const progress = ((totalSeconds - currentSeconds) / totalSeconds) * 100;
 
   // Toast notification when timer finishes
   if (isFinished) {
@@ -77,27 +71,13 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
       {/* Main Timer Display Card */}
       <EnhancedCard variant="glass" glow={isRunning} className="mb-8 max-w-2xl w-full">
         <EnhancedCardContent className="text-center">
-          <div className="flex items-center justify-center gap-8 mb-6">
-            {/* Progress Ring */}
-            <ProgressRing 
-              value={progress} 
-              size={100} 
-              className="hidden md:block"
-            />
-            
+          <div className="flex items-center justify-center mb-6">
             {/* Split Flap Display */}
             <SplitFlapDisplay 
               minutes={minutes} 
               seconds={seconds}
               size="lg"
               variant={darkMode ? 'dark' : 'light'}
-            />
-            
-            {/* Progress Ring (mobile) */}
-            <ProgressRing 
-              value={progress} 
-              size={80} 
-              className="md:hidden"
             />
           </div>
 
