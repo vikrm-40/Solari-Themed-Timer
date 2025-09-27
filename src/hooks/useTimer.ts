@@ -53,9 +53,9 @@ export const useTimer = (initialMinutes: number = 5, initialSeconds: number = 0)
   const reset = useCallback(() => {
     setIsRunning(false);
     setIsFinished(false);
-    setMinutes(originalMinutes);
-    setSeconds(originalSeconds);
-  }, [originalMinutes, originalSeconds]);
+    setMinutes(0);
+    setSeconds(0);
+  }, []);
 
   const setInitialTime = useCallback((newMinutes: number, newSeconds: number) => {
     if (!isRunning) {
