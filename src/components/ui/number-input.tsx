@@ -38,37 +38,49 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             {label}
           </label>
         )}
-        <div className={cn("number-input-container relative w-20 h-12", className)}>
-          <input
-            ref={ref}
-            type="number"
-            value={value.toString().padStart(2, '0')}
-            onChange={handleInputChange}
-            min={min}
-            max={max}
-            step={step}
-            className="number-input py-3 px-2"
-            {...props}
-          />
+        <div className="flex flex-col items-center space-y-1">
+          {/* Increment Button */}
           <Button
             type="button"
             variant="ghost"
             size="sm"
             onClick={increment}
-            className="number-button right-0 hover:bg-primary/20"
+            className="w-16 h-8 rounded-md hover:bg-primary/20 border border-border/50"
             disabled={value >= max}
           >
-            <ChevronUp className="h-3 w-3" />
+            <ChevronUp className="h-4 w-4" />
           </Button>
+          
+          {/* Number Display */}
+          <div className="relative">
+            <input
+              ref={ref}
+              type="number"
+              value={value.toString().padStart(2, '0')}
+              onChange={handleInputChange}
+              min={min}
+              max={max}
+              step={step}
+              className={cn(
+                "w-16 h-12 text-center text-lg font-bold rounded-md border border-border bg-background",
+                "focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent",
+                "appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
+                className
+              )}
+              {...props}
+            />
+          </div>
+          
+          {/* Decrement Button */}
           <Button
             type="button"
             variant="ghost"
             size="sm"
             onClick={decrement}
-            className="number-button left-0 hover:bg-primary/20"
+            className="w-16 h-8 rounded-md hover:bg-primary/20 border border-border/50"
             disabled={value <= min}
           >
-            <ChevronDown className="h-3 w-3" />
+            <ChevronDown className="h-4 w-4" />
           </Button>
         </div>
       </div>
