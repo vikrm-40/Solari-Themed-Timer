@@ -1,12 +1,89 @@
 import { useState, useEffect, useCallback } from 'react';
 
+const STORAGE_KEY = 'timer-state';
+
+const getInitialState = (initialMinutes: number, initialSeconds: number) => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const state = JSON.parse(stored);
+      
+      // If timer was running, calculate elapsed time
+      if (state.isRunning && state.lastUpdate) {
+        const elapsed = Math.floor((Date.now() - state.lastUpdate) / 1000);
+        const totalSeconds = state.minutes * 60 + state.seconds - elapsed;
+        
+        if (totalSeconds <= 0) {
+          return {
+            minutes: 0,
+            seconds: 0,
+            originalMinutes: state.originalMinutes,
+            originalSeconds: state.originalSeconds,
+            isRunning: false,
+            isFinished: true,
+          };
+        }
+        
+        return {
+          minutes: Math.floor(totalSeconds / 60),
+          seconds: totalSeconds % 60,
+          originalMinutes: state.originalMinutes,
+          originalSeconds: state.originalSeconds,
+          isRunning: true,
+          isFinished: false,
+        };
+      }
+      
+      return {
+        minutes: state.minutes,
+        seconds: state.seconds,
+        originalMinutes: state.originalMinutes,
+        originalSeconds: state.originalSeconds,
+        isRunning: false,
+        isFinished: state.isFinished,
+      };
+    }
+  } catch (error) {
+    console.error('Error loading timer state:', error);
+  }
+  
+  return {
+    minutes: initialMinutes,
+    seconds: initialSeconds,
+    originalMinutes: initialMinutes,
+    originalSeconds: initialSeconds,
+    isRunning: false,
+    isFinished: false,
+  };
+};
+
 export const useTimer = (initialMinutes: number = 5, initialSeconds: number = 0) => {
-  const [minutes, setMinutes] = useState(initialMinutes);
-  const [seconds, setSeconds] = useState(initialSeconds);
-  const [originalMinutes, setOriginalMinutes] = useState(initialMinutes);
-  const [originalSeconds, setOriginalSeconds] = useState(initialSeconds);
-  const [isRunning, setIsRunning] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
+  const initialState = getInitialState(initialMinutes, initialSeconds);
+  
+  const [minutes, setMinutes] = useState(initialState.minutes);
+  const [seconds, setSeconds] = useState(initialState.seconds);
+  const [originalMinutes, setOriginalMinutes] = useState(initialState.originalMinutes);
+  const [originalSeconds, setOriginalSeconds] = useState(initialState.originalSeconds);
+  const [isRunning, setIsRunning] = useState(initialState.isRunning);
+  const [isFinished, setIsFinished] = useState(initialState.isFinished);
+
+  // Save state to localStorage
+  useEffect(() => {
+    try {
+      const state = {
+        minutes,
+        seconds,
+        originalMinutes,
+        originalSeconds,
+        isRunning,
+        isFinished,
+        lastUpdate: Date.now(),
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {
+      console.error('Error saving timer state:', error);
+    }
+  }, [minutes, seconds, originalMinutes, originalSeconds, isRunning, isFinished]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
