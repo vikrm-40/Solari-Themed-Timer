@@ -12,41 +12,52 @@ interface SoundSelectorProps {
   onVolumeChange: (volume: number) => void;
 }
 
-const sounds: { id: SoundOption; label: string; audio: string }[] = [
-  { 
-    id: 'bell', 
-    label: 'Bell', 
-    audio: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmIgBSyRzO/Hl0ENHJGQ2OWuUhEWXMDn85xZAQ=='
-  },
-  { 
-    id: 'chime', 
-    label: 'Chime', 
-    audio: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACAhImHcGFjdpiuq49hODZhoNDaqmQdCECZ2vDCdCcILH/N8NaLOQsaabrq5p9PEw5Ppt/us2YgCTiP1e3LfC8JJXbF7tuSQwwVXLHn6adXFgtFnN3wvGQiByyPyu3GmUMQHY6N1eKuUxMYWr3l8ZpaBA=='
-  },
-  { 
-    id: 'beep', 
-    label: 'Beep', 
-    audio: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA=='
-  },
-  { 
-    id: 'gong', 
-    label: 'Gong', 
-    audio: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACDh42LZltmfqKzrI1eNTRensnXpmAYBDyX2O++cSQDKnzK792HNgYXZrjo459MEAtOpd7rr2IaAzaO1OzJeSsEI3TC7NqPPggTW67k5aVUEglEnNvuumEfBCuNx+vFlD8PHouP0t+sTxEUWLrj75hYAw=='
-  },
-  { 
-    id: 'none', 
-    label: 'No Sound', 
-    audio: ''
-  }
+// Generate different frequency beeps for each sound option
+const generateBeep = (frequency: number, duration: number = 0.2): string => {
+  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  oscillator.frequency.value = frequency;
+  oscillator.type = 'sine';
+  
+  gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+  
+  return frequency.toString(); // Return frequency as identifier
+};
+
+const sounds: { id: SoundOption; label: string; frequency: number }[] = [
+  { id: 'bell', label: 'Bell', frequency: 800 },
+  { id: 'chime', label: 'Chime', frequency: 1200 },
+  { id: 'beep', label: 'Beep', frequency: 440 },
+  { id: 'gong', label: 'Gong', frequency: 200 },
+  { id: 'none', label: 'No Sound', frequency: 0 }
 ];
 
 export const SoundSelector = ({ selectedSound, volume, onSoundChange, onVolumeChange }: SoundSelectorProps) => {
-  const playSound = (audioData: string) => {
-    if (!audioData) return;
+  const playSound = (frequency: number) => {
+    if (frequency === 0) return;
     try {
-      const audio = new Audio(audioData);
-      audio.volume = volume;
-      audio.play().catch(() => {});
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = frequency;
+      oscillator.type = 'sine';
+      
+      const duration = 0.3;
+      gainNode.gain.setValueAtTime(volume * 0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + duration);
     } catch (error) {
       console.error('Error playing sound:', error);
     }
@@ -65,7 +76,7 @@ export const SoundSelector = ({ selectedSound, volume, onSoundChange, onVolumeCh
               className="relative justify-start"
               onClick={() => {
                 onSoundChange(sound.id);
-                playSound(sound.audio);
+                playSound(sound.frequency);
               }}
             >
               {selectedSound === sound.id && (

@@ -123,10 +123,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
           </div>
           
           {/* Split Flap Display */}
-          <div className={cn(
-            "relative transition-transform duration-300",
-            isRunning && "timer-pulse-animation"
-          )}>
+          <div className="relative">
             <SplitFlapDisplay 
               minutes={minutes} 
               seconds={seconds}
