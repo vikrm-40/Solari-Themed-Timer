@@ -19,6 +19,13 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        timer: {
+          active: "hsl(var(--timer-active))",
+          "active-glow": "hsl(var(--timer-active-glow))",
+          paused: "hsl(var(--timer-paused))",
+          finished: "hsl(var(--timer-finished))",
+          idle: "hsl(var(--timer-idle))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

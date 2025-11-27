@@ -65,6 +65,13 @@ All colors MUST be HSL.
     --shadow-card: 0 20px 40px -10px hsla(220, 25%, 5%, 0.5);
     --shadow-float: 0 10px 30px hsla(271, 81%, 56%, 0.2);
 
+    /* Timer specific colors */
+    --timer-active: 142 76% 36%;
+    --timer-active-glow: 142 76% 36%;
+    --timer-paused: 45 93% 47%;
+    --timer-finished: 0 84% 60%;
+    --timer-idle: 240 5.9% 10%;
+
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
@@ -120,6 +127,13 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Timer specific colors - dark mode */
+    --timer-active: 142 71% 45%;
+    --timer-active-glow: 142 71% 45%;
+    --timer-paused: 48 96% 53%;
+    --timer-finished: 0 72% 51%;
+    --timer-idle: 0 0% 95%;
   }
 }
 
@@ -139,6 +153,26 @@ All colors MUST be HSL.
   
   .font-mono {
     font-family: 'JetBrains Mono', monospace;
+  }
+
+  .timer-glow-active {
+    box-shadow: 0 0 40px hsl(var(--timer-active-glow) / 0.3),
+                0 0 80px hsl(var(--timer-active-glow) / 0.2);
+  }
+
+  .timer-pulse-animation {
+    animation: timer-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes timer-pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
   }
 }
 
