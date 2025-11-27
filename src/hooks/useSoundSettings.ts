@@ -8,12 +8,12 @@ interface SoundSettings {
   volume: number;
 }
 
-const sounds: Record<SoundOption, string> = {
-  bell: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmIgBSyRzO/Hl0ENHJGQ2OWuUhEWXMDn85xZAQ==',
-  chime: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACAhImHcGFjdpiuq49hODZhoNDaqmQdCECZ2vDCdCcILH/N8NaLOQsaabrq5p9PEw5Ppt/us2YgCTiP1e3LfC8JJXbF7tuSQwwVXLHn6adXFgtFnN3wvGQiByyPyu3GmUMQHY6N1eKuUxMYWr3l8ZpaBA==',
-  beep: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==',
-  gong: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACDh42LZltmfqKzrI1eNTRensnXpmAYBDyX2O++cSQDKnzK792HNgYXZrjo459MEAtOpd7rr2IaAzaO1OzJeSsEI3TC7NqPPggTW67k5aVUEglEnNvuumEfBCuNx+vFlD8PHouP0t+sTxEUWLrj75hYAw==',
-  none: ''
+const soundFrequencies: Record<SoundOption, number> = {
+  bell: 800,
+  chime: 1200,
+  beep: 440,
+  gong: 200,
+  none: 0
 };
 
 export const useSoundSettings = () => {
@@ -41,9 +41,23 @@ export const useSoundSettings = () => {
     if (settings.sound === 'none') return;
     
     try {
-      const audio = new Audio(sounds[settings.sound]);
-      audio.volume = settings.volume;
-      audio.play().catch(() => {});
+      const frequency = soundFrequencies[settings.sound];
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = frequency;
+      oscillator.type = 'sine';
+      
+      const duration = 0.5;
+      gainNode.gain.setValueAtTime(settings.volume * 0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + duration);
     } catch (error) {
       console.error('Error playing sound:', error);
     }
