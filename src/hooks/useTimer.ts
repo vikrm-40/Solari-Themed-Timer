@@ -100,16 +100,6 @@ export const useTimer = (initialMinutes: number = 5, initialSeconds: number = 0)
     } else if (isRunning && minutes === 0 && seconds === 0) {
       setIsRunning(false);
       setIsFinished(true);
-      
-      // Play completion sound if available
-      try {
-        const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmIgBSyRzO/Hl0ENHJGQ2OWuUhEWXMDn85xZAQ=');
-        audio.play().catch(() => {
-          // Ignore if audio can't play
-        });
-      } catch (error) {
-        // Ignore audio errors
-      }
     }
 
     return () => {
