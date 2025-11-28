@@ -116,17 +116,16 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
       {/* Main Timer Display */}
       <div className="mb-8 max-w-2xl w-full flex items-center justify-center gap-8">
         {/* Progress Ring - positioned to the left */}
-        <div className={cn(
-          "transition-all duration-500",
-          isRunning && "timer-glow-active"
-        )}>
-          <ProgressRing 
-            value={progress} 
-            size={180}
-            strokeWidth={6}
-            showText={false}
-          />
-        </div>
+        <ProgressRing 
+          value={progress} 
+          size={180}
+          strokeWidth={6}
+          showText={false}
+          className={cn(
+            "transition-all duration-500",
+            isRunning && "drop-shadow-[0_0_20px_rgba(34,197,94,0.4)]"
+          )}
+        />
         
         {/* Split Flap Display */}
         <div className="relative">
