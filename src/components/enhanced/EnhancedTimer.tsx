@@ -49,10 +49,10 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
     }
   }, [isFinished, hasPlayedSound, playSound]);
 
-  // Calculate progress for progress ring
+  // Calculate progress for progress ring - counts DOWN from 100% to 0%
   const totalSeconds = 5 * 60; // Default 5 minutes
   const currentSeconds = minutes * 60 + seconds;
-  const progress = totalSeconds > 0 ? ((totalSeconds - currentSeconds) / totalSeconds) * 100 : 0;
+  const progress = totalSeconds > 0 ? (currentSeconds / totalSeconds) * 100 : 0;
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -106,24 +106,23 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
       {/* Main Timer Display */}
       <div className="mb-8 max-w-2xl w-full text-center">
         <div className={cn(
-          "relative flex items-center justify-center mb-6 transition-all duration-500",
+          "relative inline-flex items-center justify-center mb-6 transition-all duration-500",
           isRunning && "timer-glow-active"
         )}>
-          {/* Progress Ring */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <ProgressRing 
-              value={progress} 
-              size={360}
-              strokeWidth={8}
-              className={cn(
-                "transition-opacity duration-500",
-                isRunning ? "opacity-100" : "opacity-0"
-              )}
-            />
-          </div>
+          {/* Progress Ring - positioned absolutely behind the timer */}
+          {isRunning && (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              <ProgressRing 
+                value={progress} 
+                size={360}
+                strokeWidth={8}
+                className="transition-opacity duration-500"
+              />
+            </div>
+          )}
           
           {/* Split Flap Display */}
-          <div className="relative">
+          <div className="relative z-10">
             <SplitFlapDisplay 
               minutes={minutes} 
               seconds={seconds}
