@@ -39,13 +39,13 @@ export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitF
     // At halfway point (90 degrees), update the display value
     timeoutRef.current = window.setTimeout(() => {
       setDisplayValue(value);
-    }, 200); // Half of the 400ms animation
+    }, 325); // Half of the 650ms animation
 
     // Complete the animation
     setTimeout(() => {
       setIsFlipping(false);
       setFlipAngle(0);
-    }, 400);
+    }, 650);
   }, [value, displayValue]);
 
   const currentDigit = String(displayValue).padStart(2, '0').slice(-1);
@@ -53,37 +53,35 @@ export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitF
 
   const halfHeight = sizeClasses[size].includes('h-16') ? 32 : sizeClasses[size].includes('h-20') ? 40 : 56;
   
-  // Theme-specific styles
+  // Theme-specific styles - Industrial Luxury
   const themeStyles = {
     light: {
-      background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)',
-      topHalf: 'linear-gradient(180deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)',
-      bottomHalf: 'linear-gradient(0deg, #f1f3f4 0%, #f8f9fa 50%, #ffffff 100%)',
-      textColor: '#111827', // gray-900
+      background: 'hsl(0, 0%, 11%)', // Deep matte charcoal
+      topHalf: 'linear-gradient(180deg, hsl(0, 0%, 13%) 0%, hsl(0, 0%, 11%) 100%)',
+      bottomHalf: 'linear-gradient(0deg, hsl(0, 0%, 9%) 0%, hsl(0, 0%, 11%) 100%)',
+      textColor: 'hsl(0, 0%, 98%)',
       boxShadow: `
-        0 4px 16px rgba(0,0,0,0.08),
-        0 2px 8px rgba(0,0,0,0.04),
-        inset 0 1px 0 rgba(255,255,255,0.8),
-        inset 0 -1px 0 rgba(0,0,0,0.05)
+        0 8px 24px -8px rgba(0,0,0,0.6),
+        inset 0 1px 2px rgba(255,255,255,0.05),
+        inset 0 -1px 2px rgba(0,0,0,0.3)
       `,
-      border: '0.5px solid rgba(0,0,0,0.08)',
-      dividerLine: 'rgba(0,0,0,0.08)',
-      highlightLine: 'rgba(255,255,255,0.4)'
+      border: '1px solid hsl(0, 0%, 20%)',
+      dividerLine: 'hsl(0, 0%, 35%)', // Gunmetal grey hinge
+      highlightLine: 'rgba(255,255,255,0.03)'
     },
     dark: {
-      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #2a2a2a 100%)',
-      topHalf: 'linear-gradient(180deg, #000000 0%, #1a1a1a 50%, #2a2a2a 100%)',
-      bottomHalf: 'linear-gradient(0deg, #2a2a2a 0%, #1a1a1a 50%, #000000 100%)',
-      textColor: '#fbbf24', // yellow-400
+      background: 'hsl(0, 0%, 11%)', // Same for consistency
+      topHalf: 'linear-gradient(180deg, hsl(0, 0%, 13%) 0%, hsl(0, 0%, 11%) 100%)',
+      bottomHalf: 'linear-gradient(0deg, hsl(0, 0%, 9%) 0%, hsl(0, 0%, 11%) 100%)',
+      textColor: 'hsl(0, 0%, 98%)',
       boxShadow: `
-        0 4px 16px rgba(0,0,0,0.3),
-        0 2px 8px rgba(0,0,0,0.2),
-        inset 0 1px 0 rgba(255,255,255,0.1),
-        inset 0 -1px 0 rgba(0,0,0,0.3)
+        0 8px 24px -8px rgba(0,0,0,0.6),
+        inset 0 1px 2px rgba(255,255,255,0.05),
+        inset 0 -1px 2px rgba(0,0,0,0.3)
       `,
-      border: '0.5px solid rgba(255,255,255,0.1)',
-      dividerLine: 'rgba(255,255,255,0.15)',
-      highlightLine: 'rgba(251,191,36,0.2)'
+      border: '1px solid hsl(0, 0%, 20%)',
+      dividerLine: 'hsl(0, 0%, 35%)', // Gunmetal grey hinge
+      highlightLine: 'rgba(255,255,255,0.03)'
     }
   };
   
@@ -106,17 +104,18 @@ export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitF
           className="absolute top-0 left-0 w-full h-1/2 overflow-hidden"
           style={{ 
             background: currentTheme.topHalf,
-            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.04)'
+            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.3)'
           }}
         >
           <div 
-            className={`${sizeClasses[size]} flex items-center justify-center font-semibold`}
+            className={`${sizeClasses[size]} flex items-center justify-center font-bold`}
             style={{ 
               height: `${halfHeight * 2}px`,
               marginTop: '0',
               clipPath: 'inset(0 0 50% 0)',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-              letterSpacing: '0.02em',
+              fontFamily: 'JetBrains Mono, monospace',
+              letterSpacing: '-0.02em',
+              fontWeight: 800,
               color: currentTheme.textColor
             }}
           >
@@ -129,18 +128,19 @@ export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitF
           className="absolute bottom-0 left-0 w-full h-1/2 overflow-hidden"
           style={{ 
             background: currentTheme.bottomHalf,
-            boxShadow: 'inset 0 -1px 2px rgba(0,0,0,0.04)'
+            boxShadow: 'inset 0 -1px 2px rgba(0,0,0,0.3)'
           }}
         >
           <div 
-            className={`${sizeClasses[size]} flex items-center justify-center font-semibold`}
+            className={`${sizeClasses[size]} flex items-center justify-center font-bold`}
             style={{ 
               height: `${halfHeight * 2}px`,
               marginTop: `-${halfHeight}px`,
               clipPath: 'inset(50% 0 0 0)',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-              letterSpacing: '0.02em',
-              filter: 'brightness(0.95)',
+              fontFamily: 'JetBrains Mono, monospace',
+              letterSpacing: '-0.02em',
+              fontWeight: 800,
+              filter: 'brightness(0.92)',
               color: currentTheme.textColor
             }}
           >
@@ -157,24 +157,25 @@ export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitF
               transformStyle: 'preserve-3d', 
               transformOrigin: 'bottom center',
               transform: `rotateX(${flipAngle}deg)`,
-              transition: 'transform 400ms cubic-bezier(0.25, 0.1, 0.25, 1)',
+              transition: 'transform 650ms cubic-bezier(0.34, 1.56, 0.64, 1)', // Spring physics
               backfaceVisibility: 'hidden',
               boxShadow: `
-                0 4px 12px rgba(0,0,0,0.1),
-                0 2px 6px rgba(0,0,0,0.06),
-                inset 0 1px 2px rgba(0,0,0,0.04)
+                0 6px 16px rgba(0,0,0,0.4),
+                0 2px 8px rgba(0,0,0,0.2),
+                inset 0 1px 2px rgba(0,0,0,0.3)
               `,
-              filter: `brightness(${0.95 + Math.cos((flipAngle * Math.PI) / 180) * 0.1})`
+              filter: `brightness(${0.92 + Math.cos((flipAngle * Math.PI) / 180) * 0.12})`
             }}
           >
             <div 
-              className={`${sizeClasses[size]} flex items-center justify-center font-semibold`}
+              className={`${sizeClasses[size]} flex items-center justify-center font-bold`}
               style={{ 
                 height: `${halfHeight * 2}px`,
                 marginTop: '0',
                 clipPath: 'inset(0 0 50% 0)',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                letterSpacing: '0.02em',
+                fontFamily: 'JetBrains Mono, monospace',
+                letterSpacing: '-0.02em',
+                fontWeight: 800,
                 color: currentTheme.textColor
               }}
             >
@@ -183,24 +184,24 @@ export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitF
           </div>
         )}
 
-        {/* Clean divider line - Apple style */}
+        {/* Metallic hinge divider - Gunmetal grey */}
         <div 
           className="absolute top-1/2 left-0 w-full z-20" 
           style={{ 
-            height: '0.5px',
-            background: currentTheme.dividerLine,
-            boxShadow: '0 0.5px 0 rgba(255,255,255,0.6)',
-            transform: 'translateY(-0.25px)'
+            height: '2px',
+            background: `linear-gradient(90deg, transparent 0%, ${currentTheme.dividerLine} 10%, ${currentTheme.dividerLine} 90%, transparent 100%)`,
+            boxShadow: '0 1px 2px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)',
+            transform: 'translateY(-1px)'
           }} 
         />
         
-        {/* Subtle highlight line */}
+        {/* Subtle highlight line for depth */}
         <div 
           className="absolute top-1/2 left-0 w-full z-19" 
           style={{ 
-            height: '0.5px',
-            background: currentTheme.highlightLine,
-            transform: 'translateY(0.25px)'
+            height: '1px',
+            background: `linear-gradient(90deg, transparent 0%, ${currentTheme.highlightLine} 20%, ${currentTheme.highlightLine} 80%, transparent 100%)`,
+            transform: 'translateY(1px)'
           }} 
         />
       </div>
