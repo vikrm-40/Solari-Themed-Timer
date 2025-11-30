@@ -6,6 +6,8 @@ import { Button } from '../ui/button';
 import { ThemeToggle } from '../ui/theme-toggle';
 import { SoundSelector } from '../SoundSelector';
 import { ProgressRing } from '../ui/progress-ring';
+import { TimerPresets } from '../TimerPresets';
+import { SessionStats } from '../SessionStats';
 import { useTimer } from '@/hooks/useTimer';
 import { useSoundSettings } from '@/hooks/useSoundSettings';
 import { toast } from '@/hooks/use-toast';
@@ -33,7 +35,8 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
   const [darkMode, setDarkMode] = useState(isDarkMode);
   const [showSettings, setShowSettings] = useState(false);
   const [hasPlayedSound, setHasPlayedSound] = useState(false);
-  const [initialTotalSeconds, setInitialTotalSeconds] = useState(5 * 60); // Track initial timer value
+  const [initialTotalSeconds, setInitialTotalSeconds] = useState(5 * 60);
+  const [completedSessionTime, setCompletedSessionTime] = useState(0);
 
   // Track initial timer value when timer starts
   useEffect(() => {
@@ -50,6 +53,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
     if (isFinished && !hasPlayedSound) {
       playSound();
       setHasPlayedSound(true);
+      setCompletedSessionTime(initialTotalSeconds);
       toast({
         title: "⏰ Time's Up!",
         description: "Your timer has finished!",
@@ -58,7 +62,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
     } else if (!isFinished) {
       setHasPlayedSound(false);
     }
-  }, [isFinished, hasPlayedSound, playSound]);
+  }, [isFinished, hasPlayedSound, playSound, initialTotalSeconds]);
 
   // Calculate progress for progress ring - counts DOWN from 100% to 0%
   const currentSeconds = minutes * 60 + seconds;
@@ -76,23 +80,29 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
     return 'text-timer-idle';
   };
 
+  const handlePresetSelect = (presetMinutes: number, presetSeconds: number) => {
+    if (!isRunning) {
+      setMinutes(presetMinutes);
+      setSeconds(presetSeconds);
+      setInitialTotalSeconds(presetMinutes * 60 + presetSeconds);
+    }
+  };
+
   return (
     <div className={cn(
-      "min-h-screen transition-all duration-500 flex flex-col items-center justify-center p-4",
-      darkMode 
-        ? 'bg-gradient-to-br from-gray-900 via-black to-gray-800' 
-        : 'bg-gradient-to-br from-background via-background to-secondary/20'
+      "min-h-screen transition-all duration-700 flex items-center justify-center p-4 md:p-8",
+      "bg-background"
     )}>
       
       {/* Theme Toggle & Settings */}
-      <div className="fixed top-4 right-4 z-10 flex gap-2">
+      <div className="fixed top-6 right-6 z-10 flex gap-3">
         <Button
           variant="outline"
           size="icon"
           onClick={() => setShowSettings(!showSettings)}
           className={cn(
-            "transition-all duration-300",
-            showSettings && "bg-primary/10 border-primary"
+            "transition-all duration-300 backdrop-blur-md bg-card/50 border-border/50",
+            showSettings && "bg-primary/10 border-primary/50"
           )}
         >
           <Settings2 className="h-5 w-5" />
@@ -100,122 +110,164 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
         <ThemeToggle isDark={darkMode} onToggle={toggleTheme} />
       </div>
 
-      {/* Header */}
-      <div className="mb-8 max-w-md w-full text-center">
-        <Typography 
-          variant="title" 
-          font="display" 
-          weight="bold" 
-          gradient={true}
-          className={darkMode ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent' : ''}
-        >
-          Timer
-        </Typography>
-      </div>
-
-      {/* Main Timer Display */}
-      <div className="mb-8 max-w-2xl w-full flex items-center justify-center gap-8">
-        {/* Progress Ring - positioned to the left */}
-        <ProgressRing 
-          value={progress} 
-          size={180}
-          strokeWidth={6}
-          showText={false}
-          className={cn(
-            "transition-all duration-500",
-            isRunning && "drop-shadow-[0_0_20px_rgba(34,197,94,0.4)]"
-          )}
-        />
+      {/* Bento Grid Layout */}
+      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
         
-        {/* Split Flap Display */}
-        <div className="relative">
-          <SplitFlapDisplay 
-            minutes={minutes} 
-            seconds={seconds}
-            size="lg"
-            variant={darkMode ? 'dark' : 'light'}
-          />
+        {/* Left Column - Timer Display + Progress */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Header */}
+          <div className="text-center lg:text-left">
+            <Typography 
+              variant="title" 
+              font="mono" 
+              weight="black" 
+              className="tracking-tighter text-foreground"
+            >
+              Solari Timer
+            </Typography>
+            <p className="text-sm text-muted-foreground font-mono tracking-wide mt-2">
+              Industrial Precision • Digital Tactility
+            </p>
+          </div>
+
+          {/* Main Timer Card - Bento Style */}
+          <div className="bento-card p-8 lg:p-12">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+              {/* Progress Ring */}
+              <div className="relative">
+                <ProgressRing 
+                  value={progress} 
+                  size={200}
+                  strokeWidth={8}
+                  showText={false}
+                  className={cn(
+                    "transition-all duration-500",
+                    isRunning && "drop-shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+                  )}
+                />
+                {isRunning && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold font-mono text-primary">
+                        {Math.round(progress)}%
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Split Flap Display */}
+              <div className="relative">
+                <SplitFlapDisplay 
+                  minutes={minutes} 
+                  seconds={seconds}
+                  size="lg"
+                  variant={darkMode ? 'dark' : 'light'}
+                />
+              </div>
+            </div>
+
+            {/* Timer Status */}
+            {isFinished && (
+              <div className="mt-8 text-center">
+                <Typography variant="heading" weight="bold" className="text-timer-finished animate-pulse">
+                  🎉 Time's Up!
+                </Typography>
+              </div>
+            )}
+          </div>
+
+          {/* Controls Card */}
+          <div className="bento-card p-6">
+            <div className="space-y-6">
+              {/* Time Input Controls (only show when not running) */}
+              {!isRunning && (
+                <div className="flex justify-center gap-8">
+                  <NumberInput
+                    value={minutes}
+                    onChange={setMinutes}
+                    min={0}
+                    max={59}
+                    label="Minutes"
+                  />
+                  <NumberInput
+                    value={seconds}
+                    onChange={setSeconds}
+                    min={0}
+                    max={59}
+                    label="Seconds"
+                  />
+                </div>
+              )}
+
+              {/* Control Buttons */}
+              <div className="flex justify-center gap-4">
+                <Button
+                  variant={isRunning ? "secondary" : "default"}
+                  size="lg"
+                  onClick={isRunning ? pause : start}
+                  className={cn(
+                    "flex-1 max-w-40 transition-all duration-300 font-mono font-bold tracking-wider",
+                    isRunning && "bg-timer-paused hover:bg-timer-paused/90",
+                    !isRunning && minutes === 0 && seconds === 0 && "opacity-50 cursor-not-allowed"
+                  )}
+                  disabled={!isRunning && minutes === 0 && seconds === 0}
+                >
+                  {isRunning ? (
+                    <>
+                      <Pause className="mr-2 h-5 w-5" />
+                      Pause
+                    </>
+                  ) : (
+                    <>
+                      <Play className="mr-2 h-5 w-5" />
+                      Start
+                    </>
+                  )}
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={reset}
+                  className="hover:bg-destructive/10 hover:border-destructive/50 hover:text-destructive transition-all duration-300"
+                >
+                  <RotateCcw className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="mb-8 max-w-md w-full text-center">
-
-        {/* Timer Status */}
-        {isFinished && (
-          <Typography variant="heading" weight="bold" className="text-timer-finished mb-4 animate-pulse">
-            🎉 Time's Up!
-          </Typography>
-        )}
-      </div>
-
-      {/* Controls */}
-      <div className="w-full max-w-md space-y-6">
-        {/* Sound Settings Panel */}
-        {showSettings && (
-          <div className="glass-card p-6 rounded-xl animate-fade-in">
-            <SoundSelector
-              selectedSound={sound}
-              volume={volume}
-              onSoundChange={setSound}
-              onVolumeChange={setVolume}
-            />
+        {/* Right Column - Presets + Settings + Stats */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Presets Card */}
+          <div className="bento-card p-6">
+            <h3 className="text-sm font-mono font-bold tracking-wider uppercase text-muted-foreground mb-4">
+              Quick Presets
+            </h3>
+            <TimerPresets onPresetSelect={handlePresetSelect} disabled={isRunning} />
           </div>
-        )}
 
-        {/* Time Input Controls (only show when not running) */}
-        {!isRunning && (
-          <div className="flex justify-center gap-8">
-            <NumberInput
-              value={minutes}
-              onChange={setMinutes}
-              min={0}
-              max={59}
-              label="Minutes"
-            />
-            <NumberInput
-              value={seconds}
-              onChange={setSeconds}
-              min={0}
-              max={59}
-              label="Seconds"
-            />
+          {/* Settings Card */}
+          {showSettings && (
+            <div className="bento-card p-6 animate-fade-in">
+              <h3 className="text-sm font-mono font-bold tracking-wider uppercase text-muted-foreground mb-4">
+                Sound Settings
+              </h3>
+              <SoundSelector
+                selectedSound={sound}
+                volume={volume}
+                onSoundChange={setSound}
+                onVolumeChange={setVolume}
+              />
+            </div>
+          )}
+
+          {/* Stats Card */}
+          <div className="bento-card p-6">
+            <SessionStats currentSessionTime={completedSessionTime} />
           </div>
-        )}
-
-        {/* Control Buttons */}
-        <div className="flex justify-center gap-4">
-          <Button
-            variant={isRunning ? "secondary" : "default"}
-            size="lg"
-            onClick={isRunning ? pause : start}
-            className={cn(
-              "flex-1 max-w-32 transition-all duration-300",
-              isRunning && "bg-timer-paused hover:bg-timer-paused/90",
-              !isRunning && minutes === 0 && seconds === 0 && "opacity-50 cursor-not-allowed"
-            )}
-            disabled={!isRunning && minutes === 0 && seconds === 0}
-          >
-            {isRunning ? (
-              <>
-                <Pause className="mr-2 h-5 w-5" />
-                Pause
-              </>
-            ) : (
-              <>
-                <Play className="mr-2 h-5 w-5" />
-                Start
-              </>
-            )}
-          </Button>
-
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={reset}
-            className="hover:bg-destructive/10 hover:border-destructive/50 hover:text-destructive transition-all duration-300"
-          >
-            <RotateCcw className="h-5 w-5" />
-          </Button>
         </div>
       </div>
     </div>
