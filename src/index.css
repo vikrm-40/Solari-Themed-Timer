@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -147,7 +147,7 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Montserrat Alternates', system-ui, sans-serif;
     /* Subtle noise texture for Industrial Luxury */
     background-image: 
       repeating-linear-gradient(
@@ -168,7 +168,7 @@ All colors MUST be HSL.
   }
   
   .font-display {
-    font-family: 'Orbitron', 'Inter', system-ui, sans-serif;
+    font-family: 'Orbitron', 'Montserrat Alternates', system-ui, sans-serif;
   }
   
   .font-mono {
