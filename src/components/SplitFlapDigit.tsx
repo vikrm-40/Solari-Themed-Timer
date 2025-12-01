@@ -157,7 +157,7 @@ export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitF
               transformStyle: 'preserve-3d', 
               transformOrigin: 'bottom center',
               transform: `rotateX(${flipAngle}deg)`,
-              transition: 'transform 650ms cubic-bezier(0.34, 1.56, 0.64, 1)', // Spring physics
+              animation: 'flap-bounce 700ms cubic-bezier(0.68, -0.55, 0.265, 1.55)',
               backfaceVisibility: 'hidden',
               boxShadow: `
                 0 6px 16px rgba(0,0,0,0.4),
