@@ -144,5 +144,6 @@ export const useTimer = (initialMinutes: number = 5, initialSeconds: number = 0)
     reset,
     setMinutes: (mins: number) => setInitialTime(mins, seconds),
     setSeconds: (secs: number) => setInitialTime(minutes, secs),
+    setTime: setInitialTime,
   };
 };
