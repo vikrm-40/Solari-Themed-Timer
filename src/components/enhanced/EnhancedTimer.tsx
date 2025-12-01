@@ -29,6 +29,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
     reset,
     setMinutes,
     setSeconds,
+    setTime,
   } = useTimer(5, 0);
 
   const { sound, volume, setSound, setVolume, playSound } = useSoundSettings();
@@ -82,8 +83,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
 
   const handlePresetSelect = (presetMinutes: number, presetSeconds: number) => {
     if (!isRunning) {
-      setMinutes(presetMinutes);
-      setSeconds(presetSeconds);
+      setTime(presetMinutes, presetSeconds);
       setInitialTotalSeconds(presetMinutes * 60 + presetSeconds);
     }
   };
