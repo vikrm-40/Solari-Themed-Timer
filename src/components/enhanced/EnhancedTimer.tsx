@@ -157,29 +157,8 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
 
           {/* Controls Card */}
           <div className="bento-card p-6">
-            <div className="space-y-6">
-              {/* Time Input Controls (only show when not running) */}
-              {!isRunning && (
-                <div className="flex justify-center gap-8">
-                  <NumberInput
-                    value={minutes}
-                    onChange={setMinutes}
-                    min={0}
-                    max={59}
-                    label="Minutes"
-                  />
-                  <NumberInput
-                    value={seconds}
-                    onChange={setSeconds}
-                    min={0}
-                    max={59}
-                    label="Seconds"
-                  />
-                </div>
-              )}
-
-              {/* Control Buttons */}
-              <div className="flex justify-center gap-4">
+            {/* Control Buttons */}
+            <div className="flex justify-center gap-4">
                 <Button
                   variant={isRunning ? "secondary" : "default"}
                   size="lg"
@@ -213,7 +192,6 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
                   <RotateCcw className="h-5 w-5" />
                 </Button>
               </div>
-            </div>
           </div>
         </div>
 
@@ -256,6 +234,31 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
             </h3>
             <TimerPresets onPresetSelect={handlePresetSelect} disabled={isRunning} />
           </div>
+
+          {/* Time Input Controls */}
+          {!isRunning && (
+            <div className="bento-card p-4">
+              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
+                Set Timer
+              </h3>
+              <div className="flex justify-center gap-6">
+                <NumberInput
+                  value={minutes}
+                  onChange={setMinutes}
+                  min={0}
+                  max={59}
+                  label="Minutes"
+                />
+                <NumberInput
+                  value={seconds}
+                  onChange={setSeconds}
+                  min={0}
+                  max={59}
+                  label="Seconds"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Stats Card */}
           <div className="bento-card p-4">
