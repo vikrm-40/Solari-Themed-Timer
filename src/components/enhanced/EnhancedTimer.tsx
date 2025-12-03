@@ -69,6 +69,15 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
   const currentSeconds = minutes * 60 + seconds;
   const progress = initialTotalSeconds > 0 ? (currentSeconds / initialTotalSeconds) * 100 : 0;
 
+  // Apply dark mode to document
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
@@ -94,22 +103,6 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
       "bg-background"
     )}>
       
-      {/* Theme Toggle & Settings */}
-      <div className="fixed top-6 right-6 z-10 flex gap-3">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setShowSettings(!showSettings)}
-          className={cn(
-            "transition-all duration-300 backdrop-blur-md bg-card/50 border-border/50",
-            showSettings && "bg-primary/10 border-primary/50"
-          )}
-        >
-          <Settings2 className="h-5 w-5" />
-        </Button>
-        <ThemeToggle isDark={darkMode} onToggle={toggleTheme} />
-      </div>
-
       {/* Bento Grid Layout */}
       <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
         
@@ -239,20 +232,28 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
           </div>
         </div>
 
-        {/* Right Column - Presets + Settings + Stats */}
-        <div className="lg:col-span-4 space-y-6">
-          {/* Presets Card */}
-          <div className="bento-card p-6">
-            <h3 className="text-sm font-mono font-bold tracking-wider uppercase text-muted-foreground mb-4">
-              Quick Presets
-            </h3>
-            <TimerPresets onPresetSelect={handlePresetSelect} disabled={isRunning} />
+        {/* Right Column - Controls + Presets + Stats */}
+        <div className="lg:col-span-4 space-y-4">
+          {/* Theme & Settings Controls */}
+          <div className="flex justify-end gap-3">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setShowSettings(!showSettings)}
+              className={cn(
+                "transition-all duration-300 backdrop-blur-md bg-card/50 border-border/50",
+                showSettings && "bg-primary/10 border-primary/50"
+              )}
+            >
+              <Settings2 className="h-5 w-5" />
+            </Button>
+            <ThemeToggle isDark={darkMode} onToggle={toggleTheme} />
           </div>
 
           {/* Settings Card */}
           {showSettings && (
-            <div className="bento-card p-6 animate-fade-in">
-              <h3 className="text-sm font-mono font-bold tracking-wider uppercase text-muted-foreground mb-4">
+            <div className="bento-card p-4 animate-fade-in">
+              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
                 Sound Settings
               </h3>
               <SoundSelector
@@ -264,8 +265,16 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
             </div>
           )}
 
+          {/* Presets Card */}
+          <div className="bento-card p-4">
+            <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
+              Quick Presets
+            </h3>
+            <TimerPresets onPresetSelect={handlePresetSelect} disabled={isRunning} />
+          </div>
+
           {/* Stats Card */}
-          <div className="bento-card p-6">
+          <div className="bento-card p-4">
             <SessionStats currentSessionTime={completedSessionTime} />
           </div>
         </div>
