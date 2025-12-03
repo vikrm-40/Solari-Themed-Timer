@@ -227,14 +227,6 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
             </div>
           )}
 
-          {/* Presets Card */}
-          <div className="bento-card p-4">
-            <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
-              Quick Presets
-            </h3>
-            <TimerPresets onPresetSelect={handlePresetSelect} disabled={isRunning} />
-          </div>
-
           {/* Time Input Controls */}
           {!isRunning && (
             <div className="bento-card p-4">
@@ -259,6 +251,14 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
               </div>
             </div>
           )}
+
+          {/* Presets Card */}
+          <div className="bento-card p-4">
+            <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
+              Quick Presets
+            </h3>
+            <TimerPresets onPresetSelect={handlePresetSelect} disabled={isRunning} />
+          </div>
 
           {/* Stats Card */}
           <div className="bento-card p-4">
