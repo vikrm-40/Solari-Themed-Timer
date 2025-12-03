@@ -3,7 +3,6 @@ import { SplitFlapDisplay } from '../SplitFlapDisplay';
 import { Typography } from '../ui/typography';
 import { NumberInput } from '../ui/number-input';
 import { Button } from '../ui/button';
-import { ThemeToggle } from '../ui/theme-toggle';
 import { SoundSelector } from '../SoundSelector';
 import { ProgressRing } from '../ui/progress-ring';
 import { TimerPresets } from '../TimerPresets';
@@ -33,7 +32,6 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
   } = useTimer(5, 0);
 
   const { sound, volume, setSound, setVolume, playSound } = useSoundSettings();
-  const [darkMode, setDarkMode] = useState(isDarkMode);
   const [showSettings, setShowSettings] = useState(false);
   const [hasPlayedSound, setHasPlayedSound] = useState(false);
   const [initialTotalSeconds, setInitialTotalSeconds] = useState(5 * 60);
@@ -68,19 +66,6 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
   // Calculate progress for progress ring - counts DOWN from 100% to 0%
   const currentSeconds = minutes * 60 + seconds;
   const progress = initialTotalSeconds > 0 ? (currentSeconds / initialTotalSeconds) * 100 : 0;
-
-  // Apply dark mode to document
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
-
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-  };
 
   // Get timer state color
   const getTimerStateColor = () => {
@@ -155,7 +140,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
                   minutes={minutes} 
                   seconds={seconds}
                   size="lg"
-                  variant={darkMode ? 'dark' : 'light'}
+                  variant={isDarkMode ? 'dark' : 'light'}
                 />
               </div>
             </div>
@@ -234,8 +219,8 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
 
         {/* Right Column - Controls + Presets + Stats */}
         <div className="lg:col-span-4 space-y-4">
-          {/* Theme & Settings Controls */}
-          <div className="flex justify-end gap-3">
+          {/* Settings Controls */}
+          <div className="flex justify-end">
             <Button
               variant="outline"
               size="icon"
@@ -247,7 +232,6 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
             >
               <Settings2 className="h-5 w-5" />
             </Button>
-            <ThemeToggle isDark={darkMode} onToggle={toggleTheme} />
           </div>
 
           {/* Settings Card */}
