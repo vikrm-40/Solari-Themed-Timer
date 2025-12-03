@@ -84,39 +84,39 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
 
   return (
     <div className={cn(
-      "min-h-screen transition-all duration-700 flex items-center justify-center p-4 md:p-8",
-      "bg-background"
+      "h-screen transition-all duration-700 flex items-center justify-center p-2 md:p-4",
+      "bg-background overflow-hidden"
     )}>
       
       {/* Bento Grid Layout */}
-      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-4">
         
         {/* Left Column - Timer Display + Progress */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="lg:col-span-8 space-y-3">
           {/* Header */}
           <div className="text-center lg:text-left">
             <Typography 
               variant="title" 
               font="mono" 
               weight="black" 
-              className="tracking-tighter text-foreground"
+              className="tracking-tighter text-foreground text-2xl lg:text-3xl"
             >
               Solari Timer
             </Typography>
-            <p className="text-sm text-muted-foreground font-mono tracking-wide mt-2">
+            <p className="text-xs text-muted-foreground font-mono tracking-wide mt-1">
               Industrial Precision • Digital Tactility
             </p>
           </div>
 
           {/* Main Timer Card - Bento Style */}
-          <div className="bento-card p-8 lg:p-12">
-            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+          <div className="bento-card p-4 lg:p-6">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8">
               {/* Progress Ring */}
               <div className="relative">
                 <ProgressRing 
                   value={progress} 
-                  size={200}
-                  strokeWidth={8}
+                  size={140}
+                  strokeWidth={6}
                   showText={false}
                   className={cn(
                     "transition-all duration-500",
@@ -126,7 +126,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
                 {isRunning && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="text-3xl font-bold font-mono text-primary">
+                      <div className="text-xl font-bold font-mono text-primary">
                         {Math.round(progress)}%
                       </div>
                     </div>
@@ -139,7 +139,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
                 <SplitFlapDisplay 
                   minutes={minutes} 
                   seconds={seconds}
-                  size="lg"
+                  size="md"
                   variant={isDarkMode ? 'dark' : 'light'}
                 />
               </div>
@@ -147,8 +147,8 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
 
             {/* Timer Status */}
             {isFinished && (
-              <div className="mt-8 text-center">
-                <Typography variant="heading" weight="bold" className="text-timer-finished animate-pulse">
+              <div className="mt-4 text-center">
+                <Typography variant="heading" weight="bold" className="text-timer-finished animate-pulse text-lg">
                   🎉 Time's Up!
                 </Typography>
               </div>
@@ -156,7 +156,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
           </div>
 
           {/* Controls Card */}
-          <div className="bento-card p-6">
+          <div className="bento-card p-4">
             {/* Control Buttons */}
             <div className="flex justify-center gap-4">
                 <Button
@@ -196,7 +196,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
         </div>
 
         {/* Right Column - Controls + Presets + Stats */}
-        <div className="lg:col-span-4 space-y-4">
+        <div className="lg:col-span-4 space-y-2">
           {/* Settings Controls */}
           <div className="flex justify-end">
             <Button
@@ -214,8 +214,8 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
 
           {/* Settings Card */}
           {showSettings && (
-            <div className="bento-card p-4 animate-fade-in">
-              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
+            <div className="bento-card p-3 animate-fade-in">
+              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-2">
                 Sound Settings
               </h3>
               <SoundSelector
@@ -229,11 +229,11 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
 
           {/* Time Input Controls */}
           {!isRunning && (
-            <div className="bento-card p-4">
-              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
+            <div className="bento-card p-3">
+              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-2">
                 Set Timer
               </h3>
-              <div className="flex justify-center gap-6">
+              <div className="flex justify-center gap-4">
                 <NumberInput
                   value={minutes}
                   onChange={setMinutes}
@@ -253,15 +253,15 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
           )}
 
           {/* Presets Card */}
-          <div className="bento-card p-4">
-            <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
+          <div className="bento-card p-3">
+            <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-2">
               Quick Presets
             </h3>
             <TimerPresets onPresetSelect={handlePresetSelect} disabled={isRunning} />
           </div>
 
           {/* Stats Card */}
-          <div className="bento-card p-4">
+          <div className="bento-card p-3">
             <SessionStats currentSessionTime={completedSessionTime} />
           </div>
         </div>
