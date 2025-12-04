@@ -156,15 +156,15 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
           </div>
 
           {/* Controls Card */}
-          <div className="bento-card p-4">
+          <div className="bento-card p-3">
             {/* Control Buttons */}
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center gap-3">
                 <Button
                   variant={isRunning ? "secondary" : "default"}
-                  size="lg"
+                  size="default"
                   onClick={isRunning ? pause : start}
                   className={cn(
-                    "flex-1 max-w-40 transition-all duration-300 font-mono font-bold tracking-wider",
+                    "flex-1 max-w-32 transition-all duration-300 font-mono font-bold tracking-wider",
                     isRunning && "bg-timer-paused hover:bg-timer-paused/90",
                     !isRunning && minutes === 0 && seconds === 0 && "opacity-50 cursor-not-allowed"
                   )}
@@ -172,12 +172,12 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
                 >
                   {isRunning ? (
                     <>
-                      <Pause className="mr-2 h-5 w-5" />
+                      <Pause className="mr-2 h-4 w-4" />
                       Pause
                     </>
                   ) : (
                     <>
-                      <Play className="mr-2 h-5 w-5" />
+                      <Play className="mr-2 h-4 w-4" />
                       Start
                     </>
                   )}
@@ -185,17 +185,22 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
 
                 <Button
                   variant="outline"
-                  size="lg"
+                  size="default"
                   onClick={reset}
                   className="hover:bg-destructive/10 hover:border-destructive/50 hover:text-destructive transition-all duration-300"
                 >
-                  <RotateCcw className="h-5 w-5" />
+                  <RotateCcw className="h-4 w-4" />
                 </Button>
               </div>
           </div>
+
+          {/* Stats Card - Below Controls */}
+          <div className="bento-card p-3 rounded-xl">
+            <SessionStats currentSessionTime={completedSessionTime} />
+          </div>
         </div>
 
-        {/* Right Column - Controls + Presets + Stats */}
+        {/* Right Column - Controls + Presets */}
         <div className="lg:col-span-4 space-y-2">
           {/* Settings Controls */}
           <div className="flex justify-end">
@@ -258,11 +263,6 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
               Quick Presets
             </h3>
             <TimerPresets onPresetSelect={handlePresetSelect} disabled={isRunning} />
-          </div>
-
-          {/* Stats Card */}
-          <div className="bento-card p-3">
-            <SessionStats currentSessionTime={completedSessionTime} />
           </div>
         </div>
       </div>
