@@ -51,36 +51,36 @@ export const SessionStats = ({ currentSessionTime = 0 }: SessionStatsProps) => {
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-sm font-mono font-bold tracking-wider uppercase text-muted-foreground">
+    <div className="flex items-center gap-4">
+      <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground whitespace-nowrap">
         Today's Stats
       </h3>
-      <div className="space-y-3">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 border border-primary/20">
-            <Clock className="h-5 w-5 text-primary" />
+      <div className="flex items-center gap-4 flex-1 justify-around">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 border border-primary/20">
+            <Clock className="h-4 w-4 text-primary" />
           </div>
-          <div className="flex-1">
-            <p className="text-xs text-muted-foreground font-mono">Total Focus</p>
-            <p className="text-lg font-bold font-mono">{formatTime(totalTime)}</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/20">
-            <Target className="h-5 w-5 text-green-400" />
-          </div>
-          <div className="flex-1">
-            <p className="text-xs text-muted-foreground font-mono">Sessions</p>
-            <p className="text-lg font-bold font-mono">{sessionsCompleted}</p>
+          <div>
+            <p className="text-[10px] text-muted-foreground font-mono">Focus</p>
+            <p className="text-sm font-bold font-mono">{formatTime(totalTime)}</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent/10 border border-accent/20">
-            <TrendingUp className="h-5 w-5 text-accent" />
+        <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-green-500/10 border border-green-500/20">
+            <Target className="h-4 w-4 text-green-400" />
           </div>
-          <div className="flex-1">
-            <p className="text-xs text-muted-foreground font-mono">Streak</p>
-            <p className="text-lg font-bold font-mono">{sessionsCompleted > 0 ? '1 day' : '0 days'}</p>
+          <div>
+            <p className="text-[10px] text-muted-foreground font-mono">Sessions</p>
+            <p className="text-sm font-bold font-mono">{sessionsCompleted}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/10 border border-accent/20">
+            <TrendingUp className="h-4 w-4 text-accent" />
+          </div>
+          <div>
+            <p className="text-[10px] text-muted-foreground font-mono">Streak</p>
+            <p className="text-sm font-bold font-mono">{sessionsCompleted > 0 ? '1d' : '0d'}</p>
           </div>
         </div>
       </div>
