@@ -15,7 +15,7 @@ const presets = [
 
 export const TimerPresets = ({ onPresetSelect, disabled = false }: TimerPresetsProps) => {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-4 gap-2">
       {presets.map((preset) => {
         const Icon = preset.icon;
         return (
@@ -24,11 +24,11 @@ export const TimerPresets = ({ onPresetSelect, disabled = false }: TimerPresetsP
             onClick={() => onPresetSelect(preset.minutes, preset.seconds)}
             disabled={disabled}
             variant="outline"
-            className="preset-button h-auto py-4 px-4 flex flex-col items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+            className="preset-button h-auto py-2 px-2 flex flex-col items-center justify-center gap-1 hover:scale-[1.02] active:scale-[0.98]"
           >
-            <Icon className={`h-5 w-5 ${preset.color}`} />
-            <span className="text-xs font-bold tracking-wider">{preset.name}</span>
-            <span className="text-[10px] text-muted-foreground font-normal">
+            <Icon className={`h-4 w-4 ${preset.color}`} />
+            <span className="text-[10px] font-bold tracking-wider">{preset.name}</span>
+            <span className="text-[9px] text-muted-foreground font-normal">
               {preset.minutes}:{preset.seconds.toString().padStart(2, '0')}
             </span>
           </Button>
