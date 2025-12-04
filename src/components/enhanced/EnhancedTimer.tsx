@@ -201,7 +201,7 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
         </div>
 
         {/* Right Column - Controls + Presets */}
-        <div className="lg:col-span-4 space-y-2">
+        <div className="lg:col-span-4 space-y-2 flex flex-col justify-end">
           {/* Settings Controls */}
           <div className="flex justify-end">
             <Button
