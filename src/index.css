@@ -10,7 +10,85 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Industrial Luxury - Deep Matte Charcoal Base */
+    /* Light Mode - Clean Industrial */
+    --background: 40 20% 96%;
+    --foreground: 220 20% 15%;
+
+    --card: 40 15% 98%;
+    --card-foreground: 220 20% 15%;
+
+    --popover: 40 15% 98%;
+    --popover-foreground: 220 20% 15%;
+
+    --primary: 192 84% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 10% 92%;
+    --secondary-foreground: 220 20% 15%;
+
+    --muted: 40 10% 88%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 192 84% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 40 15% 82%;
+    --input: 40 10% 88%;
+    --ring: 192 84% 40%;
+
+    --radius: 1.5rem;
+
+    /* Light Mode Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(192 84% 40%), hsl(180 75% 35%));
+    --gradient-secondary: linear-gradient(135deg, hsl(40 15% 98%), hsl(40 10% 92%));
+    --gradient-glass: linear-gradient(135deg, hsla(220, 20%, 15%, 0.03), hsla(220, 20%, 15%, 0.01));
+    --gradient-steel: linear-gradient(180deg, hsl(40 10% 85%), hsl(40 10% 92%));
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(158 64% 52%));
+    --gradient-bento: linear-gradient(135deg, hsl(40 15% 97%), hsl(40 15% 95%));
+    
+    /* Split-flap colors - Light Industrial */
+    --flap-background: 220 15% 18%;
+    --flap-border: 220 10% 28%;
+    --flap-number: 0 0% 98%;
+    --flap-shadow: 0 8px 24px -8px hsla(220, 20%, 15%, 0.25), inset 0 1px 2px hsla(0, 0%, 100%, 0.1);
+    --flap-hinge: 220 10% 40%;
+
+    /* Glass morphism - Light */
+    --glass-border: hsla(220, 20%, 15%, 0.08);
+    --glass-bg: hsla(40, 15%, 98%, 0.85);
+    --glass-card: hsla(40, 15%, 99%, 0.9);
+    --glass-hover: hsla(192, 84%, 40%, 0.08);
+    
+    /* Shadows and glows - Light Mode */
+    --shadow-glow: 0 0 40px hsla(192, 84%, 40%, 0.25);
+    --shadow-bento: 0 12px 40px -12px hsla(220, 20%, 15%, 0.15);
+    --shadow-float: 0 16px 48px -16px hsla(192, 84%, 40%, 0.2);
+    --shadow-inner: inset 0 2px 4px hsla(220, 20%, 15%, 0.05), inset 0 -1px 2px hsla(0, 0%, 100%, 0.5);
+
+    /* Timer specific colors */
+    --timer-active: 142 76% 36%;
+    --timer-active-glow: 142 76% 36%;
+    --timer-paused: 45 93% 47%;
+    --timer-finished: 0 84% 60%;
+    --timer-idle: 220 10% 45%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 40 15% 98%;
+    --sidebar-foreground: 220 20% 25%;
+    --sidebar-primary: 192 84% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 10% 92%;
+    --sidebar-accent-foreground: 220 20% 15%;
+    --sidebar-border: 40 15% 82%;
+    --sidebar-ring: 192 84% 40%;
+  }
+
+  .dark {
+    /* Dark Mode - Industrial Luxury */
     --background: 0 0% 7%;
     --foreground: 0 0% 98%;
 
@@ -39,9 +117,7 @@ All colors MUST be HSL.
     --input: 0 0% 18%;
     --ring: 192 84% 61%;
 
-    --radius: 1.5rem;
-
-    /* Industrial Luxury Gradients */
+    /* Dark Mode Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(192 84% 61%), hsl(180 75% 55%));
     --gradient-secondary: linear-gradient(135deg, hsl(0 0% 9%), hsl(0 0% 13%));
     --gradient-glass: linear-gradient(135deg, hsla(0, 0%, 98%, 0.08), hsla(0, 0%, 98%, 0.03));
@@ -49,49 +125,40 @@ All colors MUST be HSL.
     --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(158 64% 52%));
     --gradient-bento: linear-gradient(135deg, hsl(0 0% 11%), hsl(0 0% 9%));
     
-    /* Split-flap colors - Industrial Steel */
+    /* Split-flap colors - Dark Industrial Steel */
     --flap-background: 0 0% 11%;
     --flap-border: 0 0% 20%;
     --flap-number: 0 0% 98%;
     --flap-shadow: 0 8px 24px -8px hsla(0, 0%, 0%, 0.6), inset 0 1px 2px hsla(0, 0%, 100%, 0.05);
     --flap-hinge: 0 0% 35%;
 
-    /* Glass morphism - Refined */
+    /* Glass morphism - Dark */
     --glass-border: hsla(0, 0%, 98%, 0.08);
     --glass-bg: hsla(0, 0%, 9%, 0.85);
     --glass-card: hsla(0, 0%, 11%, 0.75);
     --glass-hover: hsla(192, 84%, 61%, 0.08);
     
-    /* Shadows and glows - Precision Engineering */
+    /* Shadows and glows - Dark Mode */
     --shadow-glow: 0 0 40px hsla(192, 84%, 61%, 0.4);
     --shadow-bento: 0 12px 40px -12px hsla(0, 0%, 0%, 0.7);
     --shadow-float: 0 16px 48px -16px hsla(192, 84%, 61%, 0.25);
     --shadow-inner: inset 0 2px 4px hsla(0, 0%, 0%, 0.3), inset 0 -1px 2px hsla(0, 0%, 100%, 0.03);
 
-    /* Timer specific colors */
-    --timer-active: 142 76% 36%;
-    --timer-active-glow: 142 76% 36%;
-    --timer-paused: 45 93% 47%;
-    --timer-finished: 0 84% 60%;
-    --timer-idle: 240 5.9% 10%;
+    /* Timer specific colors - dark mode */
+    --timer-active: 142 71% 45%;
+    --timer-active-glow: 142 71% 45%;
+    --timer-paused: 48 96% 53%;
+    --timer-finished: 0 72% 51%;
+    --timer-idle: 0 0% 65%;
 
-    --radius: 0.75rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 192 84% 61%;
+    --sidebar-primary-foreground: 0 0% 7%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 192 84% 61%;
   }
 
   .dark {
