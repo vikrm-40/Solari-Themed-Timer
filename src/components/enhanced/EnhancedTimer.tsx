@@ -91,7 +91,7 @@ const EnhancedTimer = () => {
       <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
         
         {/* Left Column - Timer Display */}
-        <div className="lg:col-span-8 space-y-4">
+        <div className="lg:col-span-8 flex flex-col gap-4">
           {/* Header */}
           <div className="text-center lg:text-left">
             <Typography 
@@ -107,13 +107,13 @@ const EnhancedTimer = () => {
             </p>
           </div>
 
-          {/* Main Timer Card */}
-          <div className="bento-card p-6 lg:p-8">
+          {/* Main Timer Card - Flex grow to fill space */}
+          <div className="bento-card p-6 lg:p-10 flex-1 flex flex-col justify-center">
             <div className="flex items-center justify-center">
               <SplitFlapDisplay 
                 minutes={minutes} 
                 seconds={seconds}
-                size="lg"
+                size="xl"
                 variant={isDark ? 'dark' : 'light'}
               />
             </div>
@@ -205,9 +205,9 @@ const EnhancedTimer = () => {
             </div>
           )}
 
-          {/* Time Input Controls */}
+          {/* Time Input Controls - Flex grow to match timer card */}
           {!isRunning && (
-            <div className="bento-card p-4">
+            <div className="bento-card p-4 flex-1 flex flex-col justify-center">
               <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
                 Set Timer
               </h3>
@@ -228,6 +228,11 @@ const EnhancedTimer = () => {
                 />
               </div>
             </div>
+          )}
+
+          {/* Placeholder when running to maintain layout */}
+          {isRunning && (
+            <div className="flex-1" />
           )}
 
           {/* Presets Card */}

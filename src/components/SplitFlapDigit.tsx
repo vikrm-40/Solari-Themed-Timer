@@ -2,14 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 
 interface SplitFlapDigitProps {
   value: number;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'light' | 'dark';
 }
 
 const sizeClasses = {
   sm: 'w-12 h-16 text-2xl',
   md: 'w-16 h-20 text-3xl',
-  lg: 'w-20 h-28 text-5xl'
+  lg: 'w-20 h-28 text-5xl',
+  xl: 'w-28 h-40 text-7xl'
 };
 
 export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitFlapDigitProps) => {
@@ -51,7 +52,7 @@ export const SplitFlapDigit = ({ value, size = 'lg', variant = 'light' }: SplitF
   const currentDigit = String(displayValue).padStart(2, '0').slice(-1);
   const nextDigit = String(value).padStart(2, '0').slice(-1);
 
-  const halfHeight = sizeClasses[size].includes('h-16') ? 32 : sizeClasses[size].includes('h-20') ? 40 : 56;
+  const halfHeight = sizeClasses[size].includes('h-16') ? 32 : sizeClasses[size].includes('h-20') ? 40 : sizeClasses[size].includes('h-28') ? 56 : 80;
   
   // Theme-specific styles - Industrial Luxury
   const themeStyles = {

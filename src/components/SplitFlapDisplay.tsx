@@ -3,7 +3,7 @@ import { SplitFlapDigit } from './SplitFlapDigit';
 interface SplitFlapDisplayProps {
   minutes: number;
   seconds: number;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'light' | 'dark';
 }
 
@@ -16,7 +16,15 @@ export const SplitFlapDisplay = ({ minutes, seconds, size = 'lg', variant = 'lig
   const separatorSize = {
     sm: 'text-2xl',
     md: 'text-3xl', 
-    lg: 'text-5xl'
+    lg: 'text-5xl',
+    xl: 'text-7xl'
+  };
+
+  const dotSize = {
+    sm: 'h-2 w-2 mb-2',
+    md: 'h-2 w-2 mb-2',
+    lg: 'h-2 w-2 mb-2',
+    xl: 'h-3 w-3 mb-3'
   };
 
   return (
@@ -29,8 +37,8 @@ export const SplitFlapDisplay = ({ minutes, seconds, size = 'lg', variant = 'lig
       
       {/* Separator */}
       <div className={`flex flex-col justify-center ${separatorSize[size]} font-mono font-bold text-accent animate-pulse`}>
-        <div className="h-2 w-2 bg-accent rounded-full mb-2"></div>
-        <div className="h-2 w-2 bg-accent rounded-full"></div>
+        <div className={`${dotSize[size]} bg-accent rounded-full`}></div>
+        <div className={`${dotSize[size]} bg-accent rounded-full`}></div>
       </div>
       
       {/* Seconds */}
