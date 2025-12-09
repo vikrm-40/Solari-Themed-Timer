@@ -4,7 +4,6 @@ import { Typography } from '../ui/typography';
 import { NumberInput } from '../ui/number-input';
 import { Button } from '../ui/button';
 import { SoundSelector } from '../SoundSelector';
-import { ProgressRing } from '../ui/progress-ring';
 import { TimerPresets } from '../TimerPresets';
 import { SessionStats } from '../SessionStats';
 import { ThemeToggle } from '../ui/theme-toggle';
@@ -75,18 +74,6 @@ const EnhancedTimer = () => {
     }
   }, [isFinished, hasPlayedSound, playSound, initialTotalSeconds]);
 
-  // Calculate progress for progress ring - counts DOWN from 100% to 0%
-  const currentSeconds = minutes * 60 + seconds;
-  const progress = initialTotalSeconds > 0 ? (currentSeconds / initialTotalSeconds) * 100 : 0;
-
-  // Get timer state color
-  const getTimerStateColor = () => {
-    if (isFinished) return 'text-timer-finished';
-    if (isRunning) return 'text-timer-active';
-    if (minutes > 0 || seconds > 0) return 'text-timer-paused';
-    return 'text-timer-idle';
-  };
-
   const handlePresetSelect = (presetMinutes: number, presetSeconds: number) => {
     if (!isRunning) {
       setTime(presetMinutes, presetSeconds);
@@ -96,71 +83,45 @@ const EnhancedTimer = () => {
 
   return (
     <div className={cn(
-      "h-screen transition-all duration-700 flex items-center justify-center p-2 md:p-4",
-      "bg-background overflow-hidden"
+      "min-h-screen transition-all duration-700 flex items-center justify-center p-4 md:p-8",
+      "bg-background"
     )}>
       
       {/* Bento Grid Layout */}
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-4">
+      <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
         
-        {/* Left Column - Timer Display + Progress */}
-        <div className="lg:col-span-8 space-y-3">
+        {/* Left Column - Timer Display */}
+        <div className="lg:col-span-8 space-y-4">
           {/* Header */}
           <div className="text-center lg:text-left">
             <Typography 
               variant="title" 
               font="mono" 
               weight="black" 
-              className="tracking-tighter text-foreground text-2xl lg:text-3xl"
+              className="tracking-tighter text-foreground text-3xl lg:text-4xl"
             >
               Solari Timer
             </Typography>
-            <p className="text-xs text-muted-foreground font-mono tracking-wide mt-1">
+            <p className="text-sm text-muted-foreground font-mono tracking-wide mt-1">
               Industrial Precision • Digital Tactility
             </p>
           </div>
 
-          {/* Main Timer Card - Bento Style */}
-          <div className="bento-card p-4 lg:p-6">
-            <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8">
-              {/* Progress Ring */}
-              <div className="relative">
-                <ProgressRing 
-                  value={progress} 
-                  size={140}
-                  strokeWidth={6}
-                  showText={false}
-                  className={cn(
-                    "transition-all duration-500",
-                    isRunning && "drop-shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-                  )}
-                />
-                {isRunning && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-xl font-bold font-mono text-primary">
-                        {Math.round(progress)}%
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              
-              {/* Split Flap Display */}
-              <div className="relative">
+          {/* Main Timer Card */}
+          <div className="bento-card p-6 lg:p-8">
+            <div className="flex items-center justify-center">
               <SplitFlapDisplay 
-                  minutes={minutes} 
-                  seconds={seconds}
-                  size="md"
-                  variant={isDark ? 'dark' : 'light'}
-                />
-              </div>
+                minutes={minutes} 
+                seconds={seconds}
+                size="lg"
+                variant={isDark ? 'dark' : 'light'}
+              />
             </div>
 
             {/* Timer Status */}
             {isFinished && (
-              <div className="mt-4 text-center">
-                <Typography variant="heading" weight="bold" className="text-timer-finished animate-pulse text-lg">
+              <div className="mt-6 text-center">
+                <Typography variant="heading" weight="bold" className="text-timer-finished animate-pulse text-xl">
                   🎉 Time's Up!
                 </Typography>
               </div>
@@ -168,52 +129,51 @@ const EnhancedTimer = () => {
           </div>
 
           {/* Controls Card */}
-          <div className="bento-card p-3">
-            {/* Control Buttons */}
-            <div className="flex justify-center gap-3">
-                <Button
-                  variant={isRunning ? "secondary" : "default"}
-                  size="default"
-                  onClick={isRunning ? pause : start}
-                  className={cn(
-                    "flex-1 max-w-32 transition-all duration-300 font-mono font-bold tracking-wider",
-                    isRunning && "bg-timer-paused hover:bg-timer-paused/90",
-                    !isRunning && minutes === 0 && seconds === 0 && "opacity-50 cursor-not-allowed"
-                  )}
-                  disabled={!isRunning && minutes === 0 && seconds === 0}
-                >
-                  {isRunning ? (
-                    <>
-                      <Pause className="mr-2 h-4 w-4" />
-                      Pause
-                    </>
-                  ) : (
-                    <>
-                      <Play className="mr-2 h-4 w-4" />
-                      Start
-                    </>
-                  )}
-                </Button>
+          <div className="bento-card p-4">
+            <div className="flex justify-center gap-4">
+              <Button
+                variant={isRunning ? "secondary" : "default"}
+                size="lg"
+                onClick={isRunning ? pause : start}
+                className={cn(
+                  "flex-1 max-w-40 transition-all duration-300 font-mono font-bold tracking-wider text-base",
+                  isRunning && "bg-timer-paused hover:bg-timer-paused/90",
+                  !isRunning && minutes === 0 && seconds === 0 && "opacity-50 cursor-not-allowed"
+                )}
+                disabled={!isRunning && minutes === 0 && seconds === 0}
+              >
+                {isRunning ? (
+                  <>
+                    <Pause className="mr-2 h-5 w-5" />
+                    Pause
+                  </>
+                ) : (
+                  <>
+                    <Play className="mr-2 h-5 w-5" />
+                    Start
+                  </>
+                )}
+              </Button>
 
-                <Button
-                  variant="outline"
-                  size="default"
-                  onClick={reset}
-                  className="hover:bg-destructive/10 hover:border-destructive/50 hover:text-destructive transition-all duration-300"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                </Button>
-              </div>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={reset}
+                className="hover:bg-destructive/10 hover:border-destructive/50 hover:text-destructive transition-all duration-300"
+              >
+                <RotateCcw className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
 
-          {/* Stats Card - Below Controls */}
-          <div className="bento-card p-3 rounded-xl">
+          {/* Stats Card */}
+          <div className="bento-card p-4">
             <SessionStats currentSessionTime={completedSessionTime} />
           </div>
         </div>
 
         {/* Right Column - Controls + Presets */}
-        <div className="lg:col-span-4 flex flex-col justify-between">
+        <div className="lg:col-span-4 flex flex-col gap-4">
           {/* Settings Controls */}
           <div className="flex justify-end gap-2">
             <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
@@ -232,8 +192,8 @@ const EnhancedTimer = () => {
 
           {/* Settings Card */}
           {showSettings && (
-            <div className="bento-card p-3 animate-fade-in">
-              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-2">
+            <div className="bento-card p-4 animate-fade-in">
+              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
                 Sound Settings
               </h3>
               <SoundSelector
@@ -247,8 +207,8 @@ const EnhancedTimer = () => {
 
           {/* Time Input Controls */}
           {!isRunning && (
-            <div className="bento-card p-3">
-              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-2">
+            <div className="bento-card p-4">
+              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
                 Set Timer
               </h3>
               <div className="flex justify-center gap-4">
@@ -271,8 +231,8 @@ const EnhancedTimer = () => {
           )}
 
           {/* Presets Card */}
-          <div className="bento-card p-3">
-            <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-2">
+          <div className="bento-card p-4">
+            <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
               Quick Presets
             </h3>
             <TimerPresets onPresetSelect={handlePresetSelect} disabled={isRunning} />
