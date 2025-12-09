@@ -1,7 +1,7 @@
 import { EnhancedTimer } from '@/components/enhanced/EnhancedTimer';
 
 const DarkTimer = () => {
-  return <EnhancedTimer isDarkMode={true} />;
+  return <EnhancedTimer />;
 };
 
 export default DarkTimer;

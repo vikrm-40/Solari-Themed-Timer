@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SplitFlapDisplay } from '../SplitFlapDisplay';
 import { Typography } from '../ui/typography';
 import { NumberInput } from '../ui/number-input';
@@ -7,17 +7,16 @@ import { SoundSelector } from '../SoundSelector';
 import { ProgressRing } from '../ui/progress-ring';
 import { TimerPresets } from '../TimerPresets';
 import { SessionStats } from '../SessionStats';
+import { ThemeToggle } from '../ui/theme-toggle';
 import { useTimer } from '@/hooks/useTimer';
 import { useSoundSettings } from '@/hooks/useSoundSettings';
+import { useTheme } from '@/hooks/useTheme';
+import { useSolariSound } from '@/hooks/useSolariSound';
 import { toast } from '@/hooks/use-toast';
 import { Play, Pause, RotateCcw, Settings2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface EnhancedTimerProps {
-  isDarkMode?: boolean;
-}
-
-const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
+const EnhancedTimer = () => {
   const {
     minutes,
     seconds,
@@ -32,8 +31,12 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
   } = useTimer(5, 0);
 
   const { sound, volume, setSound, setVolume, playSound } = useSoundSettings();
+  const { isDark, toggleTheme } = useTheme();
+  const { playFlipSound } = useSolariSound();
   const [showSettings, setShowSettings] = useState(false);
   const [hasPlayedSound, setHasPlayedSound] = useState(false);
+  const prevMinutes = useRef(minutes);
+  const prevSeconds = useRef(seconds);
   const [initialTotalSeconds, setInitialTotalSeconds] = useState(5 * 60);
   const [completedSessionTime, setCompletedSessionTime] = useState(0);
 
@@ -46,6 +49,15 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
       }
     }
   }, [isRunning]);
+
+  // Play Solari flip sound when digits change
+  useEffect(() => {
+    if (isRunning && (prevMinutes.current !== minutes || prevSeconds.current !== seconds)) {
+      playFlipSound();
+    }
+    prevMinutes.current = minutes;
+    prevSeconds.current = seconds;
+  }, [minutes, seconds, isRunning, playFlipSound]);
 
   // Play sound and show toast when timer finishes
   useEffect(() => {
@@ -136,11 +148,11 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
               
               {/* Split Flap Display */}
               <div className="relative">
-                <SplitFlapDisplay 
+              <SplitFlapDisplay 
                   minutes={minutes} 
                   seconds={seconds}
                   size="md"
-                  variant={isDarkMode ? 'dark' : 'light'}
+                  variant={isDark ? 'dark' : 'light'}
                 />
               </div>
             </div>
@@ -203,7 +215,8 @@ const EnhancedTimer = ({ isDarkMode = false }: EnhancedTimerProps) => {
         {/* Right Column - Controls + Presets */}
         <div className="lg:col-span-4 flex flex-col justify-between">
           {/* Settings Controls */}
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
             <Button
               variant="outline"
               size="icon"
