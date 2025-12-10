@@ -173,39 +173,42 @@ const EnhancedTimer = () => {
         </div>
 
         {/* Right Column - Controls + Presets */}
-        <div className="lg:col-span-4 flex flex-col gap-4">
-          {/* Settings Controls */}
-          <div className="flex justify-end gap-2">
-            <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setShowSettings(!showSettings)}
-              className={cn(
-                "transition-all duration-300 backdrop-blur-md bg-card/50 border-border/50",
-                showSettings && "bg-primary/10 border-primary/50"
-              )}
-            >
-              <Settings2 className="h-5 w-5" />
-            </Button>
+        <div className="lg:col-span-4 flex flex-col gap-4 justify-between">
+          {/* Top Section */}
+          <div className="flex flex-col gap-4">
+            {/* Settings Controls */}
+            <div className="flex justify-end gap-2">
+              <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setShowSettings(!showSettings)}
+                className={cn(
+                  "transition-all duration-300 backdrop-blur-md bg-card/50 border-border/50",
+                  showSettings && "bg-primary/10 border-primary/50"
+                )}
+              >
+                <Settings2 className="h-5 w-5" />
+              </Button>
+            </div>
+
+            {/* Settings Card */}
+            {showSettings && (
+              <div className="bento-card p-4 animate-fade-in">
+                <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
+                  Sound Settings
+                </h3>
+                <SoundSelector
+                  selectedSound={sound}
+                  volume={volume}
+                  onSoundChange={setSound}
+                  onVolumeChange={setVolume}
+                />
+              </div>
+            )}
           </div>
 
-          {/* Settings Card */}
-          {showSettings && (
-            <div className="bento-card p-4 animate-fade-in">
-              <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
-                Sound Settings
-              </h3>
-              <SoundSelector
-                selectedSound={sound}
-                volume={volume}
-                onSoundChange={setSound}
-                onVolumeChange={setVolume}
-              />
-            </div>
-          )}
-
-          {/* Time Input Controls - Flex grow to match timer card */}
+          {/* Middle Section - Time Input (flex-1 to fill space) */}
           {!isRunning && (
             <div className="bento-card p-4 flex-1 flex flex-col justify-center">
               <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
@@ -235,7 +238,7 @@ const EnhancedTimer = () => {
             <div className="flex-1" />
           )}
 
-          {/* Presets Card */}
+          {/* Bottom Section - Presets */}
           <div className="bento-card p-4">
             <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
               Quick Presets
