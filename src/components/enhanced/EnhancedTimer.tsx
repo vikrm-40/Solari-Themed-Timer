@@ -107,8 +107,8 @@ const EnhancedTimer = () => {
             </p>
           </div>
 
-          {/* Main Timer Card - Flex grow to fill space */}
-          <div className="bento-card p-6 lg:p-10 flex-1 flex flex-col justify-center">
+          {/* Main Timer Card */}
+          <div className="bento-card p-6 lg:p-10 flex flex-col justify-center min-h-[280px]">
             <div className="flex items-center justify-center">
               <SplitFlapDisplay 
                 minutes={minutes} 
@@ -208,9 +208,9 @@ const EnhancedTimer = () => {
             )}
           </div>
 
-          {/* Middle Section - Time Input (flex-1 to fill space) */}
+          {/* Middle Section - Time Input (matches timer height) */}
           {!isRunning && (
-            <div className="bento-card p-4 flex-1 flex flex-col justify-center">
+            <div className="bento-card p-4 flex flex-col justify-center min-h-[280px]">
               <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground mb-3">
                 Set Timer
               </h3>
@@ -235,7 +235,7 @@ const EnhancedTimer = () => {
 
           {/* Placeholder when running to maintain layout */}
           {isRunning && (
-            <div className="flex-1" />
+            <div className="min-h-[280px]" />
           )}
 
           {/* Bottom Section - Presets */}
